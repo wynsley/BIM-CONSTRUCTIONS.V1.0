@@ -1,0 +1,22 @@
+{
+  "navbar": {
+    "about": "Sobre Nosotros",
+    "projects": {
+      "title": "Proyectos",
+      "inProgress": "En progreso",
+      "finished": "Terminado"
+    },
+    "services": "Servicios",
+    "contact": "Contacto",
+    "cta": "Contáctanos"
+  },
+  "home": {
+    "hero": {
+      "title": "Construyendo el futuro con",
+      "highlight": "Tecnología BIM",
+      "description": "Ofrecemos servicios de ingeniería, construcción y gestión de proyectos con tecnología BIM de vanguardia. Optimizamos recursos, tiempo y calidad en cada etapa.",
+      "btnProjects": "Ver Proyectos",
+      "btnContact": "Cotizar Servicio"
+    }
+  }
+}

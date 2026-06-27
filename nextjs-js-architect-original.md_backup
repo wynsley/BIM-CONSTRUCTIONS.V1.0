@@ -1,0 +1,2961 @@
+---
+name: nextjs-js-architect
+description: Professional skill for building production-grade Next.js (App Router) applications with JavaScript (JSX). Covers React Server Components (RSC) first architecture, Server Actions for mutations, native fetch for data fetching, CSS Modules for styling, JSDoc-enforced type documentation, state management with Zustand, Zod validation, accessibility (a11y), error handling, observability, security, and performance optimization. Use this skill for any Next.js component, page, layout, data fetching, Server Action, or architecture question.
+license: MIT
+metadata:
+  authors: "YeYoJs"
+  version: "1.0.0"
+---
+
+# Professional Next.js Skill — Production-Grade Architecture (App Router + JavaScript)
+
+**Always consult [nextjs.org/docs](https://nextjs.org/docs) and [react.dev/reference](https://react.dev/reference/react) for latest APIs.**
+
+> **Language policy:** This project uses **JavaScript (.js / .jsx)** exclusively. No TypeScript files. All modules, functions, props, and return values MUST be documented with **JSDoc** type annotations to simulate strict typing. Treat undocumented code as a bug.
+
+> **Styling policy:** This project uses **CSS Modules (.module.css)** exclusively. No Tailwind, no CSS-in-JS, no inline styles for layout. Global styles live in `app/globals.css` using CSS custom properties as design tokens.
+
+---
+
+## 0. BEFORE YOU WRITE ANY CODE — Consistency Protocol
+
+> **This section is mandatory. Skip it and you will break project consistency.**
+
+Every time you are asked to create or modify anything in an existing Next.js project, you MUST run this audit first. No exceptions.
+
+### Step 1 — Audit existing components
+
+```
+Does a similar component already exist in src/shared/ui/?
+  YES → extend or compose it. Never create a duplicate.
+  NO  → create it there if it's reusable, or in src/features/<name>/components/ if it's feature-specific.
+```
+
+### Step 2 — Read the design system
+
+Before writing a single style value, check:
+
+- `app/globals.css` for CSS custom properties (design tokens)
+- Existing CSS Module files in `src/shared/ui/`
+- Existing component patterns in `src/shared/ui/`
+
+- **ONLY use tokens that already exist.**
+- Never introduce raw color or spacing values outside of the design tokens.
+- If a needed token is missing, ADD IT to `app/globals.css` first, then use it.
+
+### Step 3 — Inherit naming conventions
+
+Before naming a new component, hook, or file, look at 2–3 existing components and match their pattern exactly.
+
+| Type                   | Convention                           | Example                                    |
+| ---------------------- | ------------------------------------ | ------------------------------------------ |
+| React Components       | PascalCase                           | `BlogCard.jsx`, `AuthGuard.jsx`            |
+| Server Components      | PascalCase, no directive             | `BlogList.jsx` (default RSC)               |
+| Client Components      | PascalCase, `'use client'` top       | `LikeButton.jsx`                           |
+| Hooks                  | camelCase, prefixed `use`            | `useAuth.js`, `usePagination.js`           |
+| Server Actions         | camelCase, `'use server'` top        | `createPost.js`, `deleteComment.js`        |
+| Utilities              | camelCase                            | `formatDate.js`, `cn.js`                   |
+| Context providers      | PascalCase + `Provider`              | `AuthProvider.jsx`                         |
+| JSDoc type definitions | PascalCase via `@typedef`            | `@typedef {Object} UserProfile`            |
+| Feature folders        | kebab-case                           | `blog/`, `user-profile/`                   |
+| Route segments         | kebab-case                           | `app/blog/[slug]/page.jsx`                 |
+| Constants              | SCREAMING_SNAKE_CASE                 | `MAX_POSTS_PER_PAGE`                       |
+| CSS Modules            | PascalCase import, camelCase classes | `import styles from './Button.module.css'` |
+
+### Step 4 — Check the rendering strategy
+
+Before adding data-fetching or interactivity:
+
+- **Is this component interactive?** Does it use `useState`, `useEffect`, event handlers, or browser APIs?
+  - YES → Add `'use client'` directive at the top. This is a Client Component.
+  - NO → Leave it as a Server Component (default). **Never add `'use client'` unless required.**
+- Does the route segment already have a `loading.jsx` or `error.jsx`?
+- Match the existing caching and revalidation strategy — don't introduce conflicting `revalidate` values.
+
+### Step 5 — Consistency checklist before delivering code
+
+Before responding with any code, verify:
+
+- [ ] No raw color or spacing values outside the design tokens in `globals.css`
+- [ ] No duplicate component that already exists in `shared/ui/`
+- [ ] Components follow PascalCase; hooks follow `use` prefix
+- [ ] All component props are documented with `@param` JSDoc annotations
+- [ ] All functions have `@returns` JSDoc annotations
+- [ ] New shared components placed in `shared/ui/`, feature-specific in `features/<name>/`
+- [ ] No inline `style={{}}` for layout (use CSS Modules only)
+- [ ] All form elements have associated `<label>` or `aria-label`
+- [ ] No missing key props in lists
+- [ ] No direct DOM manipulations — use `useRef` + effects
+- [ ] All async operations have proper error handling (try/catch or `.catch`)
+- [ ] `'use client'` is only present where strictly necessary
+- [ ] Server Actions validate all inputs with Zod before processing
+
+---
+
+## 1. Professional Project Structure
+
+Next.js App Router hierarchy — each feature owns its components, hooks, styles, and actions.
+
+```
+app/                              → Next.js App Router (routes)
+  layout.jsx                      → Root layout (RSC)
+  globals.css                     → Global styles, reset, CSS custom properties
+  page.jsx                        → Home page (RSC)
+  loading.jsx                     → Global loading UI
+  error.jsx                       → Global error UI ('use client')
+  not-found.jsx                   → 404 page
+  blog/
+    page.jsx                      → Blog list page (RSC)
+    [slug]/
+      page.jsx                    → Blog post page (RSC)
+      loading.jsx                 → Blog-specific loading
+      error.jsx                   → Blog-specific error
+    actions/
+      createPost.js               → Server Action
+      deletePost.js               → Server Action
+  auth/
+    login/
+      page.jsx                    → Login page (RSC shell + client form)
+    register/
+      page.jsx                    → Register page
+  dashboard/
+    layout.jsx                    → Dashboard layout (RSC, auth-protected)
+    page.jsx
+  api/                            → Route Handlers (if needed)
+    health/
+      route.js
+src/
+  features/
+    blog/
+      components/
+        BlogCard/
+          BlogCard.jsx            → RSC or Client Component
+          BlogCard.module.css
+          BlogCard.test.jsx
+        BlogGrid/
+          BlogGrid.jsx
+          BlogGrid.module.css
+      hooks/
+        useLikePost.js            → Client-only hook
+      lib/
+        blogService.js            → Data access layer (server-side)
+        blogValidators.js         → Zod schemas
+      index.js                    → Re-exports public API
+    auth/
+      components/
+        LoginForm/
+          LoginForm.jsx           → 'use client'
+          LoginForm.module.css
+          LoginForm.test.jsx
+        AuthGuard.jsx
+      hooks/
+        useAuth.js
+      lib/
+        authService.js
+        authValidators.js
+      context/
+        AuthContext.jsx           → 'use client'
+      index.js
+  shared/
+    ui/                           → Atomic, reusable UI components
+      Button/
+        Button.jsx
+        Button.module.css
+        Button.test.jsx
+      Modal/
+        Modal.jsx                 → 'use client'
+        Modal.module.css
+        Modal.test.jsx
+      Input/
+        Input.jsx
+        Input.test.jsx
+        Input.module.css
+      Card/
+        Card.jsx
+        Card.module.css
+      Skeleton/
+        Skeleton.jsx
+        Skeleton.module.css
+    hooks/
+      useDebounce.js
+      useMediaQuery.js
+      useIntersectionObserver.js
+    lib/
+      constants.js
+      utils.js
+      cn.js                       → className utility (clsx)
+      validators.js               → Shared Zod schemas
+    types/
+      jsdoc.js                    → Shared @typedef definitions (JSDoc only)
+    middleware/
+      ErrorBoundary.jsx           → 'use client'
+    styles/
+      tokens.css                  → Additional design token partials (imported by globals.css)
+  store/                          → Zustand stores (client-only global state)
+    cartStore.js
+    uiStore.js
+  test/
+    setup.js                      → Test configuration
+    mocks/
+      handlers.js                 → MSW handlers
+      server.js                   → MSW server
+middleware.js                     → Next.js middleware (auth, redirects, headers)
+next.config.js                    → Next.js configuration
+jsconfig.json                     → Path aliases (@/ → src/)
+```
+
+### Where does a new file go? Decision tree
+
+```
+Is it used in more than one feature?
+  YES → src/shared/ui/ (component) or src/shared/lib/ (utility)
+  NO  → src/features/<feature-name>/components/
+
+Is it a page/route?
+  YES → app/<route-segment>/page.jsx
+
+Is it a layout or template?
+  YES → app/<route-segment>/layout.jsx or template.jsx
+
+Is it a Server Action?
+  YES → app/<route-segment>/actions/<actionName>.js or co-located in the feature
+
+Is it a custom hook?
+  YES → src/shared/hooks/ (global) or src/features/<name>/hooks/ (feature)
+
+Is it a data service (DB queries, external APIs)?
+  YES → src/features/<name>/lib/ (feature) or src/shared/lib/ (global)
+
+Is it a React context?
+  YES → src/features/<name>/context/ (feature)
+```
+
+### Configuration files
+
+| File                   | Purpose                                                         |
+| ---------------------- | --------------------------------------------------------------- |
+| `jsconfig.json`        | Path aliases (`@/` → `src/`), editor intellisense for JSDoc     |
+| `next.config.js`       | Next.js build, images, redirects, headers, env                  |
+| `vitest.config.js`     | Test runner config                                              |
+| `playwright.config.js` | E2E test config                                                 |
+| `.eslintrc.cjs`        | Linting with `eslint-config-next` + `eslint-plugin-react-hooks` |
+| `.prettierrc`          | Code formatting                                                 |
+| `middleware.js`        | Request-level auth, redirects, security headers                 |
+
+### JSDoc configuration (`jsconfig.json`)
+
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "checkJs": true,
+    "strictNullChecks": true,
+    "moduleResolution": "bundler",
+    "target": "es2022",
+    "jsx": "react-jsx"
+  },
+  "include": ["src/**/*", "app/**/*"],
+  "exclude": ["node_modules"]
+}
+```
+
+> Enable `checkJs: true` so your editor validates JSDoc annotations as if they were TypeScript types. This catches type mismatches at edit time without a `.ts` file.
+
+---
+
+## 2. JSDoc — Mandatory Type Documentation
+
+> **Rule:** Every exported function, component, hook, action, and constant MUST have complete JSDoc annotations. Undocumented exports are treated as bugs.
+
+### Type definitions (`@typedef`)
+
+```js
+// src/shared/types/jsdoc.js
+// This file exists solely for shared JSDoc type definitions.
+// It is never imported at runtime — only referenced via @typedef imports in JSDoc comments.
+
+/**
+ * @typedef {Object} ApiResponse
+ * @property {boolean} success
+ * @property {string} [message]
+ * @property {Object} [errors]
+ */
+
+/**
+ * @typedef {Object} UserProfile
+ * @property {string} id
+ * @property {string} name
+ * @property {string} email
+ * @property {'admin' | 'user'} role
+ * @property {string} [avatarUrl]
+ */
+
+/**
+ * @typedef {Object} PaginatedResult
+ * @property {Array<Object>} items
+ * @property {number} totalCount
+ * @property {number} page
+ * @property {number} pageSize
+ * @property {boolean} hasNextPage
+ */
+```
+
+### Component documentation
+
+```jsx
+// src/shared/ui/Card/Card.jsx
+import styles from "./Card.module.css";
+import { cn } from "@/shared/lib/cn";
+
+/**
+ * Presentational card component for displaying content blocks.
+ *
+ * @param {Object} props
+ * @param {string} props.title - The card heading text.
+ * @param {string} props.description - Short description under the title.
+ * @param {'default' | 'elevated'} [props.variant='default'] - Visual variant.
+ * @param {React.ReactNode} [props.children] - Optional body content.
+ * @param {string} [props.className] - Additional CSS class names.
+ * @returns {JSX.Element}
+ */
+export function Card({
+  title,
+  description,
+  variant = "default",
+  children,
+  className,
+}) {
+  return (
+    <article className={cn(styles.card, styles[variant], className)}>
+      <h3 className={styles.title}>{title}</h3>
+      {description && <p className={styles.description}>{description}</p>}
+      {children && <div className={styles.content}>{children}</div>}
+    </article>
+  );
+}
+```
+
+### Hook documentation
+
+```js
+// src/shared/hooks/useDebounce.js
+import { useState, useEffect } from "react";
+
+/**
+ * Debounces a value by the given delay.
+ *
+ * @template T
+ * @param {T} value - The value to debounce.
+ * @param {number} [delay=300] - Debounce delay in milliseconds.
+ * @returns {T} The debounced value.
+ */
+export function useDebounce(value, delay = 300) {
+  const [debounced, setDebounced] = useState(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+
+  return debounced;
+}
+```
+
+### Server Action documentation
+
+```js
+// app/blog/actions/createPost.js
+"use server";
+
+import { z } from "zod";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+
+const createPostSchema = z.object({
+  title: z.string().min(3, "Title must be at least 3 characters").max(200),
+  content: z.string().min(10, "Content must be at least 10 characters"),
+  category: z.enum(["tech", "design", "business"]),
+});
+
+/**
+ * Server Action: Creates a new blog post.
+ * Validates input with Zod, persists to database, and revalidates the blog listing.
+ *
+ * @param {Object|null} prevState - Previous action state (from useActionState).
+ * @param {FormData} formData - The submitted form data.
+ * @returns {Promise<{errors?: Object, message?: string}>} Action result.
+ */
+export async function createPost(prevState, formData) {
+  const raw = {
+    title: formData.get("title"),
+    content: formData.get("content"),
+    category: formData.get("category"),
+  };
+
+  const parsed = createPostSchema.safeParse(raw);
+
+  if (!parsed.success) {
+    return {
+      errors: parsed.error.flatten().fieldErrors,
+      message: "Validation failed.",
+    };
+  }
+
+  try {
+    // await db.posts.create({ data: parsed.data });
+    revalidatePath("/blog");
+  } catch (error) {
+    return { message: "Failed to create post. Please try again." };
+  }
+
+  redirect("/blog");
+}
+```
+
+---
+
+## 3. Component Architecture — RSC-First
+
+### The Server/Client boundary — core principle
+
+> **Default is Server.** Every component in the `app/` directory and `src/` directory is a React Server Component (RSC) unless explicitly marked with `'use client'`. Only add `'use client'` when the component requires interactivity, browser APIs, or React hooks that run on the client (`useState`, `useEffect`, event handlers, etc.).
+
+```
+Server Component (default)          Client Component ('use client')
+─────────────────────────────       ─────────────────────────────────
+✓ Direct DB/API access              ✓ useState, useEffect, useRef
+✓ Access to fs, env vars            ✓ Event handlers (onClick, onChange)
+✓ async/await in component body     ✓ Browser APIs (window, localStorage)
+✓ Zero client JS bundle impact      ✓ Third-party client libs (Zustand, etc.)
+✗ No useState/useEffect             ✗ Cannot access server-only resources
+✗ No event handlers                 ✗ Adds to client JS bundle
+✗ No browser APIs                   ✗ No async component body
+```
+
+### Server Component (RSC) — Data fetching
+
+```jsx
+// app/blog/page.jsx — Server Component (default, no directive)
+import { BlogGrid } from "@/features/blog/components/BlogGrid/BlogGrid";
+import { Suspense } from "react";
+import { BlogGridSkeleton } from "@/features/blog/components/BlogGrid/BlogGridSkeleton";
+
+/**
+ * Blog listing page. Fetches posts on the server and renders a grid.
+ *
+ * @returns {Promise<JSX.Element>}
+ */
+export default async function BlogPage() {
+  return (
+    <main>
+      <h1>Blog</h1>
+      <Suspense fallback={<BlogGridSkeleton />}>
+        <BlogPostsList />
+      </Suspense>
+    </main>
+  );
+}
+
+/**
+ * Async RSC that fetches and renders blog posts.
+ * Wrapped in Suspense by the parent for streaming.
+ *
+ * @returns {Promise<JSX.Element>}
+ */
+async function BlogPostsList() {
+  const posts = await fetch("https://api.example.com/posts", {
+    next: { revalidate: 60 }, // ISR: revalidate every 60 seconds
+  }).then((res) => res.json());
+
+  return <BlogGrid posts={posts} />;
+}
+```
+
+### Client Component — Interactivity
+
+```jsx
+// src/features/blog/components/LikeButton/LikeButton.jsx
+"use client";
+
+import { useState, useTransition } from "react";
+import styles from "./LikeButton.module.css";
+
+/**
+ * Interactive like button for blog posts. Client Component.
+ *
+ * @param {Object} props
+ * @param {string} props.postId - The post ID to like.
+ * @param {number} props.initialLikes - Initial like count from server.
+ * @param {Function} props.onLike - Server Action to persist the like.
+ * @returns {JSX.Element}
+ */
+export function LikeButton({ postId, initialLikes, onLike }) {
+  const [likes, setLikes] = useState(initialLikes);
+  const [isPending, startTransition] = useTransition();
+
+  const handleLike = () => {
+    setLikes((prev) => prev + 1); // Optimistic update
+    startTransition(async () => {
+      await onLike(postId);
+    });
+  };
+
+  return (
+    <button
+      className={styles.likeButton}
+      onClick={handleLike}
+      disabled={isPending}
+      aria-label={`Like post, current count: ${likes}`}
+    >
+      ♥ {likes}
+    </button>
+  );
+}
+```
+
+### Presentational Components (Pure/Stateless)
+
+Receive data via props, no side effects, no state (or only UI state). These are Server Components by default.
+
+```jsx
+// src/shared/ui/Card/Card.jsx — Server Component (no directive needed)
+import styles from "./Card.module.css";
+import { cn } from "@/shared/lib/cn";
+
+/**
+ * @param {Object} props
+ * @param {string} props.title
+ * @param {string} props.description
+ * @param {'default' | 'elevated'} [props.variant='default']
+ * @param {React.ReactNode} [props.children]
+ * @param {string} [props.className]
+ * @returns {JSX.Element}
+ */
+export function Card({
+  title,
+  description,
+  variant = "default",
+  children,
+  className,
+}) {
+  return (
+    <article className={cn(styles.card, styles[variant], className)}>
+      <h3 className={styles.title}>{title}</h3>
+      {description && <p className={styles.description}>{description}</p>}
+      {children && <div className={styles.content}>{children}</div>}
+    </article>
+  );
+}
+```
+
+### Container Pattern — RSC Shell + Client Island
+
+```jsx
+// app/blog/[slug]/page.jsx — Server Component (fetches data, delegates to client for interactivity)
+import { notFound } from "next/navigation";
+import { Card } from "@/shared/ui/Card/Card";
+import { LikeButton } from "@/features/blog/components/LikeButton/LikeButton";
+import { likePost } from "@/features/blog/actions/likePost";
+
+/**
+ * Blog post detail page. Server Component shell with client interactive islands.
+ *
+ * @param {Object} props
+ * @param {Object} props.params
+ * @param {string} props.params.slug
+ * @returns {Promise<JSX.Element>}
+ */
+export default async function BlogPostPage({ params }) {
+  const { slug } = await params;
+  const post = await fetch(`https://api.example.com/posts/${slug}`, {
+    next: { revalidate: 60 },
+  }).then((res) => {
+    if (!res.ok) return null;
+    return res.json();
+  });
+
+  if (!post) notFound();
+
+  return (
+    <main>
+      <article>
+        <Card title={post.title} description={post.excerpt} />
+        <div>{post.content}</div>
+        {/* Client island for interactivity */}
+        <LikeButton
+          postId={post.id}
+          initialLikes={post.likes}
+          onLike={likePost}
+        />
+      </article>
+    </main>
+  );
+}
+```
+
+### Compound Components (Client-side shared state)
+
+```jsx
+// src/shared/ui/Tabs/Tabs.jsx
+"use client";
+
+import { createContext, useContext, useState, useCallback } from "react";
+import { cn } from "@/shared/lib/cn";
+import styles from "./Tabs.module.css";
+
+/** @type {React.Context<{activeTab: string, setActiveTab: (tab: string) => void} | null>} */
+const TabsContext = createContext(null);
+
+/**
+ * @returns {{activeTab: string, setActiveTab: (tab: string) => void}}
+ */
+function useTabsContext() {
+  const ctx = useContext(TabsContext);
+  if (!ctx)
+    throw new Error("Tabs compound components must be used within <Tabs>");
+  return ctx;
+}
+
+/**
+ * Root Tabs container. Manages active tab state.
+ *
+ * @param {Object} props
+ * @param {string} props.defaultTab - Initially active tab ID.
+ * @param {React.ReactNode} props.children
+ * @param {(tab: string) => void} [props.onChange] - Called when active tab changes.
+ * @returns {JSX.Element}
+ */
+export function Tabs({ defaultTab, children, onChange }) {
+  const [activeTab, setActiveTab] = useState(defaultTab);
+  const handleChange = useCallback(
+    (tab) => {
+      setActiveTab(tab);
+      onChange?.(tab);
+    },
+    [onChange],
+  );
+
+  return (
+    <TabsContext.Provider value={{ activeTab, setActiveTab: handleChange }}>
+      <div role="tablist" className={styles.tabs}>
+        {children}
+      </div>
+    </TabsContext.Provider>
+  );
+}
+
+/**
+ * Individual tab button.
+ *
+ * @param {Object} props
+ * @param {string} props.id - Unique tab identifier.
+ * @param {React.ReactNode} props.children
+ * @returns {JSX.Element}
+ */
+export function Tab({ id, children }) {
+  const { activeTab, setActiveTab } = useTabsContext();
+  return (
+    <button
+      role="tab"
+      id={`tab-${id}`}
+      aria-selected={activeTab === id}
+      aria-controls={`panel-${id}`}
+      tabIndex={activeTab === id ? 0 : -1}
+      onClick={() => setActiveTab(id)}
+      className={cn(styles.tab, activeTab === id && styles.tabActive)}
+    >
+      {children}
+    </button>
+  );
+}
+
+/**
+ * Tab panel — renders content for the active tab.
+ *
+ * @param {Object} props
+ * @param {string} props.id - Must match a Tab's id.
+ * @param {React.ReactNode} props.children
+ * @returns {JSX.Element|null}
+ */
+export function TabPanel({ id, children }) {
+  const { activeTab } = useTabsContext();
+  if (activeTab !== id) return null;
+  return (
+    <div
+      role="tabpanel"
+      id={`panel-${id}`}
+      aria-labelledby={`tab-${id}`}
+      className={styles.panel}
+    >
+      {children}
+    </div>
+  );
+}
+```
+
+### Sub-folder Pattern for Complex Components
+
+When a component grows beyond ~150 lines or accumulates sub-parts, promote it to a folder:
+
+```
+shared/ui/DataTable/
+  DataTable.jsx            → main component ('use client' if interactive)
+  DataTable.module.css
+  DataTable.test.jsx
+  parts/
+    TableHeader.jsx
+    TableRow.jsx
+    TablePagination.jsx
+    TableFilters.jsx
+  hooks/
+    useTableSort.js
+    useTableSelection.js
+  utils/
+    columnHelpers.js
+  index.js                 → re-exports public API
+```
+
+`DataTable/index.js`:
+
+```js
+export { DataTable } from "./DataTable";
+```
+
+---
+
+## 4. Data Fetching Architecture
+
+### Decision tree for data fetching
+
+```
+Is this data needed at render time (page load)?
+  YES → Fetch in a Server Component with native fetch()
+        → Use { next: { revalidate: N } } for ISR
+        → Use { cache: 'no-store' } for dynamic data
+  NO  → Is this triggered by a user action (form submit, button click)?
+          YES → Use a Server Action ('use server')
+          NO  → Is this a client-side interaction (search, filter, infinite scroll)?
+                  YES → Use fetch in a Client Component inside useEffect or event handler
+                  NO  → Re-evaluate: it should be server-fetched.
+```
+
+### Server-side data fetching (RSC)
+
+```jsx
+// src/features/blog/lib/blogService.js
+// This module runs ONLY on the server — imported by Server Components and Server Actions.
+
+/**
+ * @typedef {Object} BlogPost
+ * @property {string} id
+ * @property {string} title
+ * @property {string} slug
+ * @property {string} excerpt
+ * @property {string} content
+ * @property {string} authorId
+ * @property {string} createdAt
+ * @property {number} likes
+ */
+
+const API_BASE = process.env.API_URL; // Server-only env var (no NEXT_PUBLIC_ prefix)
+
+/**
+ * Fetches all blog posts with optional category filter.
+ * Uses ISR with 60-second revalidation.
+ *
+ * @param {{ category?: string, page?: number }} [filters]
+ * @returns {Promise<BlogPost[]>}
+ */
+export async function getBlogPosts(filters = {}) {
+  const params = new URLSearchParams();
+  if (filters.category) params.set("category", filters.category);
+  if (filters.page) params.set("page", String(filters.page));
+
+  const res = await fetch(`${API_BASE}/posts?${params}`, {
+    next: { revalidate: 60 },
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch posts: ${res.status} ${res.statusText}`);
+  }
+
+  return res.json();
+}
+
+/**
+ * Fetches a single blog post by slug.
+ *
+ * @param {string} slug
+ * @returns {Promise<BlogPost | null>}
+ */
+export async function getBlogPost(slug) {
+  const res = await fetch(`${API_BASE}/posts/${slug}`, {
+    next: { revalidate: 60 },
+  });
+
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`Failed to fetch post: ${res.statusText}`);
+
+  return res.json();
+}
+```
+
+```jsx
+// app/blog/page.jsx — uses the service in a Server Component
+import { getBlogPosts } from "@/features/blog/lib/blogService";
+import { BlogGrid } from "@/features/blog/components/BlogGrid/BlogGrid";
+
+/**
+ * @param {Object} props
+ * @param {Object} props.searchParams
+ * @returns {Promise<JSX.Element>}
+ */
+export default async function BlogPage({ searchParams }) {
+  const { category, page } = await searchParams;
+  const posts = await getBlogPosts({ category, page: Number(page) || 1 });
+
+  return (
+    <main>
+      <h1>Blog</h1>
+      <BlogGrid posts={posts} />
+    </main>
+  );
+}
+```
+
+### Next.js fetch caching strategies
+
+| Strategy      | fetch option                           | When to use                     |
+| ------------- | -------------------------------------- | ------------------------------- |
+| Static (SSG)  | `{ cache: 'force-cache' }` (default)   | Content that rarely changes     |
+| ISR           | `{ next: { revalidate: 60 } }`         | Content updated periodically    |
+| Dynamic (SSR) | `{ cache: 'no-store' }`                | User-specific or real-time data |
+| On-demand     | `revalidatePath()` / `revalidateTag()` | After Server Action mutations   |
+
+### Parallel and sequential data fetching
+
+```jsx
+// app/dashboard/page.jsx — parallel fetching for independent data
+import {
+  getStats,
+  getRecentActivity,
+  getNotifications,
+} from "@/features/dashboard/lib/dashboardService";
+
+/**
+ * Dashboard page with parallel data fetching for maximum performance.
+ * @returns {Promise<JSX.Element>}
+ */
+export default async function DashboardPage() {
+  // Parallel: all three requests fire simultaneously
+  const [stats, activity, notifications] = await Promise.all([
+    getStats(),
+    getRecentActivity(),
+    getNotifications(),
+  ]);
+
+  return (
+    <main>
+      <h1>Dashboard</h1>
+      <StatsPanel stats={stats} />
+      <ActivityFeed activity={activity} />
+      <NotificationList notifications={notifications} />
+    </main>
+  );
+}
+```
+
+```jsx
+// Sequential: when one fetch depends on another's result
+export default async function UserPostsPage({ params }) {
+  const { userId } = await params;
+  const user = await getUser(userId); // must complete first
+  const posts = await getPostsByAuthor(user.id); // depends on user.id
+
+  return (
+    <main>
+      <h1>Posts by {user.name}</h1>
+      <BlogGrid posts={posts} />
+    </main>
+  );
+}
+```
+
+---
+
+## 5. Server Actions and Forms
+
+### Server Actions — the mutation model
+
+Server Actions replace API routes for mutations. They run on the server, have access to the database, and can be called from Client Components via form `action` or programmatically.
+
+```js
+// app/blog/actions/createPost.js
+"use server";
+
+import { z } from "zod";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+
+const createPostSchema = z.object({
+  title: z.string().min(3).max(200),
+  content: z.string().min(10),
+  category: z.enum(["tech", "design", "business"]),
+});
+
+/**
+ * Server Action: Create a new blog post.
+ *
+ * @param {Object|null} prevState - Previous state from useActionState.
+ * @param {FormData} formData - Submitted form data.
+ * @returns {Promise<{errors?: Object, message?: string}>}
+ */
+export async function createPost(prevState, formData) {
+  const raw = Object.fromEntries(formData);
+  const parsed = createPostSchema.safeParse(raw);
+
+  if (!parsed.success) {
+    return {
+      errors: parsed.error.flatten().fieldErrors,
+      message: "Please fix the errors below.",
+    };
+  }
+
+  try {
+    // await db.posts.create({ data: parsed.data });
+  } catch (error) {
+    console.error("[createPost]", error);
+    return { message: "Database error. Please try again." };
+  }
+
+  revalidatePath("/blog");
+  redirect("/blog");
+}
+```
+
+### Client form with `useActionState`
+
+```jsx
+// src/features/blog/components/CreatePostForm/CreatePostForm.jsx
+"use client";
+
+import { useActionState } from "react";
+import { createPost } from "@/app/blog/actions/createPost";
+import { SubmitButton } from "@/shared/ui/SubmitButton/SubmitButton";
+import styles from "./CreatePostForm.module.css";
+
+/**
+ * Form for creating a new blog post.
+ * Uses useActionState to manage Server Action state.
+ *
+ * @returns {JSX.Element}
+ */
+export function CreatePostForm() {
+  const [state, formAction, isPending] = useActionState(createPost, null);
+
+  return (
+    <form action={formAction} className={styles.form}>
+      <div className={styles.field}>
+        <label htmlFor="title">Title</label>
+        <input id="title" name="title" type="text" required minLength={3} />
+        {state?.errors?.title && (
+          <p className={styles.error} role="alert">
+            {state.errors.title[0]}
+          </p>
+        )}
+      </div>
+
+      <div className={styles.field}>
+        <label htmlFor="content">Content</label>
+        <textarea
+          id="content"
+          name="content"
+          required
+          minLength={10}
+          rows={8}
+        />
+        {state?.errors?.content && (
+          <p className={styles.error} role="alert">
+            {state.errors.content[0]}
+          </p>
+        )}
+      </div>
+
+      <div className={styles.field}>
+        <label htmlFor="category">Category</label>
+        <select id="category" name="category" required>
+          <option value="">Select a category</option>
+          <option value="tech">Tech</option>
+          <option value="design">Design</option>
+          <option value="business">Business</option>
+        </select>
+        {state?.errors?.category && (
+          <p className={styles.error} role="alert">
+            {state.errors.category[0]}
+          </p>
+        )}
+      </div>
+
+      {state?.message && !state?.errors && (
+        <p className={styles.errorGeneral} role="alert">
+          {state.message}
+        </p>
+      )}
+
+      <SubmitButton />
+    </form>
+  );
+}
+```
+
+### `useFormStatus` — pending state for child components
+
+`useFormStatus` must be used in a **child** of the `<form>`, not the form component itself:
+
+```jsx
+// src/shared/ui/SubmitButton/SubmitButton.jsx
+"use client";
+
+import { useFormStatus } from "react-dom";
+import styles from "./SubmitButton.module.css";
+
+/**
+ * Submit button that automatically shows pending state.
+ * MUST be rendered as a child of a <form> element.
+ *
+ * @param {Object} [props]
+ * @param {string} [props.label='Submit'] - Button label text.
+ * @param {string} [props.pendingLabel='Submitting...'] - Label while pending.
+ * @returns {JSX.Element}
+ */
+export function SubmitButton({
+  label = "Submit",
+  pendingLabel = "Submitting...",
+}) {
+  const { pending } = useFormStatus();
+  return (
+    <button type="submit" disabled={pending} className={styles.button}>
+      {pending ? pendingLabel : label}
+    </button>
+  );
+}
+```
+
+### `useOptimistic` — instant UI feedback
+
+```jsx
+// src/features/blog/components/CommentList/CommentList.jsx
+"use client";
+
+import { useOptimistic, useActionState } from "react";
+import { addComment } from "@/app/blog/actions/addComment";
+import { SubmitButton } from "@/shared/ui/SubmitButton/SubmitButton";
+import styles from "./CommentList.module.css";
+
+/**
+ * Comment list with optimistic UI updates.
+ *
+ * @param {Object} props
+ * @param {Array<{id: string, text: string}>} props.comments - Existing comments from server.
+ * @returns {JSX.Element}
+ */
+export function CommentList({ comments }) {
+  const [optimisticComments, addOptimistic] = useOptimistic(
+    comments,
+    (state, newText) => [
+      ...state,
+      { id: "temp", text: newText, pending: true },
+    ],
+  );
+
+  const [, formAction] = useActionState(async (_prevState, formData) => {
+    const text = formData.get("comment");
+    addOptimistic(text);
+    await addComment(formData);
+    return null;
+  }, null);
+
+  return (
+    <>
+      <ul className={styles.list}>
+        {optimisticComments.map((c) => (
+          <li key={c.id} className={c.pending ? styles.pending : ""}>
+            {c.text}
+          </li>
+        ))}
+      </ul>
+      <form action={formAction} className={styles.form}>
+        <label htmlFor="comment" className="sr-only">
+          Add a comment
+        </label>
+        <input
+          id="comment"
+          name="comment"
+          required
+          placeholder="Write a comment..."
+        />
+        <SubmitButton label="Post" pendingLabel="Posting..." />
+      </form>
+    </>
+  );
+}
+```
+
+### When to use each form pattern
+
+| Pattern                             | When to use                                                           |
+| ----------------------------------- | --------------------------------------------------------------------- |
+| Server Action + `useActionState`    | Standard forms, CRUD, any mutation that talks to a database           |
+| Traditional `useState` + `onSubmit` | Complex multi-step forms, or when you need fine-grained field control |
+| `useOptimistic`                     | Immediately reflect UI changes before server confirms                 |
+| Route Handler (`app/api/`)          | Webhooks, third-party integrations, long polling — NOT for forms      |
+
+---
+
+## 6. State Management Architecture
+
+### Decision tree for state placement
+
+```
+Is the state used by only one component?
+  YES → useState / useReducer (local state in a Client Component)
+  NO  → Is it used by a component and its direct children?
+          YES → Prop drilling (lift state up)
+          NO  → Is it used across unrelated parts of the tree?
+                  YES → Is it low/medium frequency updates?
+                          YES → React Context (in a Client Component subtree)
+                          NO  → Zustand store (high frequency or complex state)
+```
+
+> **In Next.js App Router, prefer passing data as props from Server Components.** Only use Context or Zustand for truly client-side, interactive state that cannot be derived from the server.
+
+### Local State
+
+```jsx
+// UI state — component-scoped (always 'use client')
+"use client";
+import { useState, useReducer } from "react";
+
+const [isOpen, setIsOpen] = useState(false);
+const [formData, setFormData] = useState(
+  /** @type {{ name: string, email: string }} */ ({ name: "", email: "" }),
+);
+const [validationErrors, dispatch] = useReducer(errorsReducer, {});
+```
+
+### Shared State via Context
+
+```jsx
+// src/features/auth/context/AuthContext.jsx
+"use client";
+
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
+
+/**
+ * @typedef {Object} AuthUser
+ * @property {string} id
+ * @property {string} name
+ * @property {string} email
+ * @property {'admin' | 'user'} role
+ */
+
+/**
+ * @typedef {Object} AuthContextValue
+ * @property {AuthUser | null} user
+ * @property {boolean} isLoading
+ * @property {(email: string, password: string) => Promise<void>} login
+ * @property {() => Promise<void>} logout
+ * @property {boolean} isAuthenticated
+ */
+
+/** @type {React.Context<AuthContextValue | null>} */
+const AuthContext = createContext(null);
+
+/**
+ * Authentication provider. Wraps the client-side subtree that needs auth state.
+ *
+ * @param {Object} props
+ * @param {React.ReactNode} props.children
+ * @returns {JSX.Element}
+ */
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(/** @type {AuthUser | null} */ (null));
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then((res) => (res.ok ? res.json() : null))
+      .then(setUser)
+      .catch(() => setUser(null))
+      .finally(() => setIsLoading(false));
+  }, []);
+
+  const login = useCallback(async (email, password) => {
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    if (!res.ok) throw new Error("Invalid credentials");
+    const data = await res.json();
+    setUser(data.user);
+  }, []);
+
+  const logout = useCallback(async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    setUser(null);
+  }, []);
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        isLoading,
+        login,
+        logout,
+        isAuthenticated: user !== null,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+/**
+ * Hook to access authentication state. Must be used within AuthProvider.
+ *
+ * @returns {AuthContextValue}
+ */
+export function useAuth() {
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error("useAuth must be used within AuthProvider");
+  return ctx;
+}
+```
+
+### Complex Global State (Zustand — for Client Components)
+
+> **Zustand in Next.js:** Zustand stores run on the client only. Import them only in `'use client'` components. Never import a Zustand store in a Server Component.
+
+```js
+// src/store/cartStore.js
+import { create } from "zustand";
+import { devtools, persist } from "zustand/middleware";
+
+/**
+ * @typedef {Object} CartItem
+ * @property {string} id
+ * @property {string} name
+ * @property {number} price
+ * @property {number} quantity
+ */
+
+/**
+ * @typedef {Object} CartState
+ * @property {CartItem[]} items
+ * @property {number} totalItems
+ * @property {number} totalPrice
+ * @property {(item: Omit<CartItem, 'quantity'>) => void} addItem
+ * @property {(id: string) => void} removeItem
+ * @property {(id: string, quantity: number) => void} updateQuantity
+ * @property {() => void} clearCart
+ */
+
+/** @type {import('zustand').UseBoundStore<import('zustand').StoreApi<CartState>>} */
+export const useCartStore = create(
+  devtools(
+    persist(
+      (set) => ({
+        items: [],
+        totalItems: 0,
+        totalPrice: 0,
+
+        addItem: (item) =>
+          set((state) => {
+            const existing = state.items.find((i) => i.id === item.id);
+            const newItems = existing
+              ? state.items.map((i) =>
+                  i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i,
+                )
+              : [...state.items, { ...item, quantity: 1 }];
+            return {
+              items: newItems,
+              totalItems: newItems.reduce((acc, i) => acc + i.quantity, 0),
+              totalPrice: newItems.reduce(
+                (acc, i) => acc + i.price * i.quantity,
+                0,
+              ),
+            };
+          }),
+
+        removeItem: (id) =>
+          set((state) => {
+            const newItems = state.items.filter((i) => i.id !== id);
+            return {
+              items: newItems,
+              totalItems: newItems.reduce((acc, i) => acc + i.quantity, 0),
+              totalPrice: newItems.reduce(
+                (acc, i) => acc + i.price * i.quantity,
+                0,
+              ),
+            };
+          }),
+
+        updateQuantity: (id, quantity) =>
+          set((state) => {
+            const newItems = state.items.map((i) =>
+              i.id === id ? { ...i, quantity: Math.max(0, quantity) } : i,
+            );
+            return {
+              items: newItems,
+              totalItems: newItems.reduce((acc, i) => acc + i.quantity, 0),
+              totalPrice: newItems.reduce(
+                (acc, i) => acc + i.price * i.quantity,
+                0,
+              ),
+            };
+          }),
+
+        clearCart: () => set({ items: [], totalItems: 0, totalPrice: 0 }),
+      }),
+      { name: "cart-storage", partialize: (state) => ({ items: state.items }) },
+    ),
+  ),
+);
+```
+
+### Zustand Hydration Safety in Next.js
+
+```jsx
+// src/shared/hooks/useHydrated.js
+"use client";
+
+import { useState, useEffect } from "react";
+
+/**
+ * Returns true only after the component has hydrated on the client.
+ * Use to prevent hydration mismatches with persisted Zustand stores.
+ *
+ * @returns {boolean}
+ */
+export function useHydrated() {
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => setHydrated(true), []);
+  return hydrated;
+}
+```
+
+```jsx
+// Usage in a Client Component
+"use client";
+import { useCartStore } from "@/store/cartStore";
+import { useHydrated } from "@/shared/hooks/useHydrated";
+
+export function CartBadge() {
+  const hydrated = useHydrated();
+  const totalItems = useCartStore((state) => state.totalItems);
+
+  if (!hydrated) return <span>0</span>; // SSR-safe fallback
+  return <span>{totalItems}</span>;
+}
+```
+
+---
+
+## 7. Hooks Architecture
+
+### Rules of Hooks (strict)
+
+- **Call hooks only at the top level** — never inside conditions, loops, or nested functions.
+- **Call hooks only from React functions** — components or custom hooks.
+- **Name custom hooks with `use` prefix** — this enables the linter.
+- **Hooks only work in `'use client'` components** — Server Components cannot use hooks.
+
+### Custom hook patterns
+
+```js
+// src/shared/hooks/useMediaQuery.js
+"use client";
+
+import { useState, useEffect } from "react";
+
+/**
+ * Listens to a CSS media query and returns whether it matches.
+ *
+ * @param {string} query - CSS media query string (e.g., '(min-width: 768px)').
+ * @returns {boolean} Whether the media query matches.
+ */
+export function useMediaQuery(query) {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const mql = window.matchMedia(query);
+    setMatches(mql.matches);
+
+    /** @param {MediaQueryListEvent} e */
+    const handler = (e) => setMatches(e.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, [query]);
+
+  return matches;
+}
+```
+
+### Hook composition pattern
+
+```js
+// src/features/blog/hooks/useBlogPostActions.js
+"use client";
+
+import { useAuth } from "@/features/auth/context/AuthContext";
+import { useTransition } from "react";
+
+/**
+ * Composes authentication and blog post action logic.
+ *
+ * @param {Object} post - The blog post object.
+ * @param {string} post.id
+ * @param {string} post.authorId
+ * @param {Function} likeAction - Server Action to like the post.
+ * @returns {{ canEdit: boolean, likePost: () => void, isPending: boolean }}
+ */
+export function useBlogPostActions(post, likeAction) {
+  const { user } = useAuth();
+  const [isPending, startTransition] = useTransition();
+
+  const canEdit = user?.role === "admin" || user?.id === post.authorId;
+
+  const likePost = () => {
+    startTransition(async () => {
+      await likeAction(post.id);
+    });
+  };
+
+  return { canEdit, likePost, isPending };
+}
+```
+
+---
+
+## 8. Styling Architecture — CSS Modules Exclusively
+
+### Design tokens in `globals.css`
+
+```css
+/* app/globals.css */
+:root {
+  /* Colors */
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-primary-light: #dbeafe;
+  --color-danger: #dc2626;
+  --color-danger-hover: #b91c1c;
+  --color-success: #16a34a;
+  --color-warning: #d97706;
+
+  --color-background: #ffffff;
+  --color-foreground: #0f172a;
+  --color-muted: #f1f5f9;
+  --color-muted-foreground: #64748b;
+  --color-border: #e2e8f0;
+  --color-ring: #93c5fd;
+
+  /* Typography */
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+
+  /* Borders */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 200ms ease;
+  --transition-slow: 300ms ease;
+}
+
+/* Dark mode tokens */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #0f172a;
+    --color-foreground: #f8fafc;
+    --color-muted: #1e293b;
+    --color-muted-foreground: #94a3b8;
+    --color-border: #334155;
+  }
+}
+
+/* Global reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+  color: var(--color-foreground);
+  background-color: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Visually hidden utility (for screen readers) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+```
+
+### CSS Modules pattern
+
+```css
+/* src/shared/ui/Button/Button.module.css */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition:
+    background-color var(--transition-base),
+    box-shadow var(--transition-base);
+  line-height: 1.5;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.primary:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+}
+
+.danger {
+  background-color: var(--color-danger);
+  color: white;
+}
+
+.danger:hover:not(:disabled) {
+  background-color: var(--color-danger-hover);
+}
+
+.ghost {
+  background: transparent;
+  color: var(--color-foreground);
+}
+
+.ghost:hover:not(:disabled) {
+  background-color: var(--color-muted);
+}
+
+.sm {
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--font-size-xs);
+}
+.lg {
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--font-size-base);
+}
+
+.spinner {
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: var(--radius-full);
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+```
+
+```jsx
+// src/shared/ui/Button/Button.jsx
+import styles from "./Button.module.css";
+import { cn } from "@/shared/lib/cn";
+
+/**
+ * Reusable button component with variants and sizes.
+ *
+ * @param {Object} props
+ * @param {'primary' | 'ghost' | 'danger'} [props.variant='primary'] - Visual variant.
+ * @param {'sm' | 'md' | 'lg'} [props.size='md'] - Size variant.
+ * @param {boolean} [props.loading=false] - Show loading spinner.
+ * @param {boolean} [props.disabled] - Disable the button.
+ * @param {string} [props.className] - Additional CSS classes.
+ * @param {React.ReactNode} props.children - Button content.
+ * @returns {JSX.Element}
+ */
+export function Button({
+  variant = "primary",
+  size = "md",
+  loading = false,
+  disabled,
+  className,
+  children,
+  ...props
+}) {
+  return (
+    <button
+      className={cn(
+        styles.btn,
+        styles[variant],
+        size !== "md" && styles[size],
+        className,
+      )}
+      disabled={disabled || loading}
+      {...props}
+    >
+      {loading && <span className={styles.spinner} aria-hidden="true" />}
+      {children}
+    </button>
+  );
+}
+```
+
+### className utility (no Tailwind merge needed)
+
+```js
+// src/shared/lib/cn.js
+import clsx from "clsx";
+
+/**
+ * Merges class names conditionally using clsx.
+ *
+ * @param {...(string | Object | Array | undefined | null | false)} inputs - Class values.
+ * @returns {string} Merged class string.
+ */
+export function cn(...inputs) {
+  return clsx(inputs);
+}
+```
+
+### Styling rules (enforced)
+
+| Rule                                             | Rationale                                            |
+| ------------------------------------------------ | ---------------------------------------------------- |
+| **Only CSS Modules** for component styles        | Scoped by default, zero runtime cost, works with RSC |
+| **Only CSS custom properties** for design tokens | Single source of truth in `globals.css`              |
+| **No inline `style={{}}` for layout**            | Use CSS Modules classes instead                      |
+| **No Tailwind**                                  | Project uses CSS Modules exclusively                 |
+| **No CSS-in-JS** (styled-components, emotion)    | Incompatible with RSC, runtime cost                  |
+| **Use `composes`** for CSS Module inheritance    | `composes: btn from './Button.module.css';`          |
+
+---
+
+## 9. Performance Optimization
+
+### React Compiler — automatic memoization (React 19+)
+
+React Compiler analyzes your components at **build time** and automatically inserts memoization. With the compiler enabled, **most manual `useMemo`, `useCallback`, and `React.memo` usage becomes unnecessary**.
+
+```js
+// next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  experimental: {
+    reactCompiler: true,
+  },
+};
+
+module.exports = nextConfig;
+```
+
+**What the compiler handles automatically:**
+
+- Memoizing expensive computations (replaces `useMemo`)
+- Stabilizing callback references (replaces `useCallback`)
+- Skipping re-renders for unchanged props (replaces `React.memo`)
+
+**When manual memoization is still needed:**
+
+- Components with **side effects** that depend on specific reference identity
+- Libraries/utilities that the compiler can't statically analyze
+- Situations where you need **correctness guarantees** (not just performance)
+
+> **For new projects:** Enable React Compiler and drop manual `useMemo`/`useCallback`/`React.memo` by default.
+
+### Next.js-specific optimizations
+
+```jsx
+// Image optimization — always use next/image
+import Image from 'next/image';
+
+<Image
+  src="/hero.jpg"
+  alt="Hero banner"
+  width={1200}
+  height={600}
+  priority            // Above the fold → preload
+  placeholder="blur"  // Show blurred version while loading
+/>
+
+// Font optimization — use next/font
+import { Inter } from 'next/font/google';
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-sans',
+});
+
+// In root layout:
+<html className={inter.variable}>
+```
+
+### Code splitting in Next.js
+
+```jsx
+// Dynamic imports for heavy client components
+import dynamic from "next/dynamic";
+
+const RichTextEditor = dynamic(
+  () => import("@/shared/ui/RichTextEditor/RichTextEditor"),
+  {
+    loading: () => <p>Loading editor...</p>,
+    ssr: false, // Client-only component
+  },
+);
+
+const ChartWidget = dynamic(
+  () => import("@/shared/ui/ChartWidget/ChartWidget"),
+  { ssr: false },
+);
+```
+
+### Performance anti-patterns — NEVER do these
+
+```jsx
+// [NO] Index as key
+{items.map((item, i) => <Item key={i} />)}
+
+// [OK] Stable unique key
+{items.map(item => <Item key={item.id} />)}
+
+// [NO] Unnecessary 'use client' on a component that doesn't need it
+'use client'; // Don't add this if the component has no interactivity!
+
+// [NO] Fetching data in a Client Component when it could be a Server Component
+'use client';
+useEffect(() => { fetch('/api/data')... }, []); // Should be RSC fetch
+
+// [NO] Unnecessary useEffect for derived state
+const [firstName, setFirstName] = useState('');
+const [lastName, setLastName] = useState('');
+const [fullName, setFullName] = useState(''); // [NO] Derived state
+useEffect(() => setFullName(`${firstName} ${lastName}`), [firstName, lastName]);
+
+// [OK] Compute at render
+const fullName = `${firstName} ${lastName}`;
+
+// [NO] Importing a Zustand store in a Server Component
+// Server Components cannot use client-only stores
+
+// [NO] Using { cache: 'no-store' } when ISR would suffice
+// Unnecessary dynamic rendering kills performance
+```
+
+---
+
+## 10. Testing Strategy
+
+### Unit tests
+
+Test pure functions, utilities, validators, and isolated logic.
+
+```js
+// src/shared/lib/__tests__/validators.test.js
+import { describe, it, expect } from "vitest";
+import { validateEmail, validatePassword } from "../validators";
+
+describe("validateEmail", () => {
+  it("returns true for valid emails", () => {
+    expect(validateEmail("user@example.com")).toBe(true);
+    expect(validateEmail("test@sub.domain.co")).toBe(true);
+  });
+
+  it("returns false for invalid emails", () => {
+    expect(validateEmail("")).toBe(false);
+    expect(validateEmail("not-an-email")).toBe(false);
+  });
+});
+```
+
+### Component/Integration tests
+
+Test component rendering, user interactions, and state changes. Use `@testing-library/react`.
+
+```jsx
+// src/shared/ui/Button/__tests__/Button.test.jsx
+import { describe, it, expect, vi } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { Button } from "../Button";
+
+describe("Button", () => {
+  it("renders with text", () => {
+    render(<Button>Click me</Button>);
+    expect(
+      screen.getByRole("button", { name: /click me/i }),
+    ).toBeInTheDocument();
+  });
+
+  it("calls onClick when clicked", () => {
+    const handleClick = vi.fn();
+    render(<Button onClick={handleClick}>Click</Button>);
+    fireEvent.click(screen.getByRole("button"));
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+
+  it("is disabled when disabled prop is true", () => {
+    render(<Button disabled>Disabled</Button>);
+    expect(screen.getByRole("button")).toBeDisabled();
+  });
+
+  it("renders loading state", () => {
+    render(<Button loading>Loading</Button>);
+    expect(screen.getByRole("button")).toBeDisabled();
+  });
+
+  it("applies variant classes", () => {
+    const { rerender } = render(<Button variant="primary">Primary</Button>);
+    expect(screen.getByRole("button").className).toContain("primary");
+
+    rerender(<Button variant="ghost">Ghost</Button>);
+    expect(screen.getByRole("button").className).toContain("ghost");
+  });
+});
+```
+
+### Server Action tests
+
+```js
+// app/blog/actions/__tests__/createPost.test.js
+import { describe, it, expect, vi } from "vitest";
+// Note: Server Actions need a special test setup to mock the 'use server' environment
+
+describe("createPost", () => {
+  it("returns validation errors for invalid input", async () => {
+    const { createPost } = await import("../createPost");
+    const formData = new FormData();
+    formData.set("title", "ab"); // too short
+    formData.set("content", "short");
+    formData.set("category", "invalid");
+
+    const result = await createPost(null, formData);
+    expect(result.errors).toBeDefined();
+    expect(result.errors.title).toBeDefined();
+  });
+});
+```
+
+### E2E tests (Playwright)
+
+```js
+// e2e/blog.spec.js
+import { test, expect } from "@playwright/test";
+
+test.describe("Blog CRUD", () => {
+  test("user can view blog post list", async ({ page }) => {
+    await page.goto("/blog");
+    await expect(page.locator("h1")).toContainText("Blog");
+    await expect(page.locator("article").first()).toBeVisible();
+  });
+
+  test("user can navigate to a blog post", async ({ page }) => {
+    await page.goto("/blog");
+    await page.click("article:first-child a");
+    await expect(page.locator("article")).toBeVisible();
+  });
+
+  test("admin can create a new post", async ({ page }) => {
+    // Login as admin first
+    await page.goto("/auth/login");
+    await page.fill('[name="email"]', "admin@example.com");
+    await page.fill('[name="password"]', "AdminPass123");
+    await page.click('button[type="submit"]');
+    await page.waitForURL("/dashboard");
+
+    // Create post
+    await page.goto("/blog/new");
+    await page.fill('[name="title"]', "E2E Test Post");
+    await page.fill(
+      '[name="content"]',
+      "This is test content for the E2E test.",
+    );
+    await page.selectOption('[name="category"]', "tech");
+    await page.click('button[type="submit"]');
+
+    await expect(page).toHaveURL(/\/blog/);
+  });
+});
+```
+
+### Testing configuration
+
+```js
+// vitest.config.js
+import { defineConfig } from "vitest/config";
+import react from "@vitejs/plugin-react";
+import path from "node:path";
+
+export default defineConfig({
+  plugins: [react()],
+  test: {
+    environment: "jsdom",
+    setupFiles: ["./src/test/setup.js"],
+    globals: true,
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "json", "html"],
+      include: ["src/**/*.{js,jsx}", "app/**/*.{js,jsx}"],
+      exclude: ["src/**/*.test.*", "src/**/*.stories.*", "**/*.d.ts"],
+      thresholds: {
+        lines: 80,
+        functions: 80,
+        branches: 75,
+        statements: 80,
+      },
+    },
+  },
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
+});
+```
+
+```js
+// src/test/setup.js
+import "@testing-library/jest-dom/vitest";
+import { server } from "./mocks/server";
+import { cleanup } from "@testing-library/react";
+import { afterAll, afterEach, beforeAll } from "vitest";
+
+// MSW setup
+beforeAll(() => server.listen({ onUnhandledRequest: "warn" }));
+afterEach(() => {
+  server.resetHandlers();
+  cleanup();
+});
+afterAll(() => server.close());
+```
+
+---
+
+## 11. Accessibility (a11y) and UX
+
+### Semantic HTML requirements
+
+**Never use generic elements that should be semantic:**
+
+```jsx
+// [NO] Wrong
+<div onClick={() => {}} role="button" tabIndex={0}>Click me</div>
+
+// [OK] Correct
+<button onClick={() => {}}>Click me</button>
+
+// [NO] Wrong — nav as div
+<div className="navigation"><a href="/">Home</a></div>
+
+// [OK] Correct
+<nav aria-label="Main navigation"><a href="/">Home</a></nav>
+
+// [NO] Wrong — heading without hierarchy
+<div className="title">Page Title</div>
+
+// [OK] Correct
+<h1>Page Title</h1>
+
+// [NO] Wrong — image without alt
+<img src="logo.png" />
+
+// [OK] Correct — use next/image
+import Image from 'next/image';
+<Image src="/logo.png" alt="Company Name" width={120} height={40} />
+<Image src="/icon.png" alt="" width={24} height={24} /> {/* decorative: empty alt */}
+```
+
+### ARIA and keyboard navigation for modals
+
+```jsx
+// src/shared/ui/Modal/Modal.jsx
+"use client";
+
+import { useEffect, useRef, useCallback } from "react";
+import { createPortal } from "react-dom";
+import styles from "./Modal.module.css";
+
+/**
+ * Accessible modal dialog with focus trap and keyboard navigation.
+ *
+ * @param {Object} props
+ * @param {boolean} props.isOpen - Whether the modal is visible.
+ * @param {() => void} props.onClose - Called when the modal should close.
+ * @param {string} props.title - Modal heading text (used for aria-labelledby).
+ * @param {React.ReactNode} props.children - Modal body content.
+ * @returns {JSX.Element|null}
+ */
+export function Modal({ isOpen, onClose, title, children }) {
+  /** @type {React.RefObject<HTMLDivElement>} */
+  const dialogRef = useRef(null);
+  /** @type {React.RefObject<HTMLElement|null>} */
+  const previousFocusRef = useRef(null);
+
+  // Save and restore focus
+  useEffect(() => {
+    if (isOpen) {
+      previousFocusRef.current = /** @type {HTMLElement} */ (
+        document.activeElement
+      );
+      requestAnimationFrame(() => dialogRef.current?.focus());
+    } else if (previousFocusRef.current) {
+      previousFocusRef.current.focus();
+    }
+  }, [isOpen]);
+
+  // Close on Escape
+  useEffect(() => {
+    if (!isOpen) return;
+    /** @param {KeyboardEvent} e */
+    const handler = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [isOpen, onClose]);
+
+  // Trap focus within modal
+  const handleKeyDown = useCallback((e) => {
+    if (e.key !== "Tab") return;
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+
+    const focusable = dialog.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+    );
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last?.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first?.focus();
+    }
+  }, []);
+
+  if (!isOpen) return null;
+
+  return createPortal(
+    <div
+      className={styles.overlay}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      role="presentation"
+    >
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+        tabIndex={-1}
+        className={styles.modal}
+        onKeyDown={handleKeyDown}
+      >
+        <header className={styles.header}>
+          <h2 id="modal-title" className={styles.title}>
+            {title}
+          </h2>
+          <button
+            onClick={onClose}
+            aria-label="Close modal"
+            className={styles.closeButton}
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </header>
+        <div className={styles.body}>{children}</div>
+      </div>
+    </div>,
+    document.body,
+  );
+}
+```
+
+### Focus management hook
+
+```js
+// src/shared/hooks/useFocusTrap.js
+"use client";
+
+import { useEffect, useRef } from "react";
+
+/**
+ * Traps focus within a container element while active.
+ * Restores focus to the previously focused element on deactivation.
+ *
+ * @param {boolean} isActive - Whether the focus trap is active.
+ * @returns {React.RefObject<HTMLDivElement>} Ref to attach to the container.
+ */
+export function useFocusTrap(isActive) {
+  /** @type {React.RefObject<HTMLDivElement>} */
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    if (!isActive || !containerRef.current) return;
+
+    const container = containerRef.current;
+    const previouslyFocused = /** @type {HTMLElement} */ (
+      document.activeElement
+    );
+
+    const getFocusable = () =>
+      container.querySelectorAll(
+        "a[href], button:not([disabled]), textarea:not([disabled]), " +
+          'input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      );
+
+    const focusable = getFocusable();
+    if (focusable.length > 0) focusable[0].focus();
+
+    /** @param {KeyboardEvent} e */
+    const handler = (e) => {
+      if (e.key !== "Tab") return;
+      const current = getFocusable();
+      const first = current[0];
+      const last = current[current.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last?.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handler);
+    return () => {
+      document.removeEventListener("keydown", handler);
+      previouslyFocused?.focus();
+    };
+  }, [isActive]);
+
+  return containerRef;
+}
+```
+
+### Accessibility checklist
+
+- [ ] All images have `alt` text (empty `alt=""` for decorative) — use `next/image`
+- [ ] All form inputs have associated `<label>` or `aria-label`
+- [ ] All buttons have accessible names (visible text or `aria-label`)
+- [ ] Custom controls have appropriate `role` and `aria-*` attributes
+- [ ] Keyboard navigation works: Tab, Shift+Tab, Enter, Escape, Arrow keys
+- [ ] Focus order follows visual order
+- [ ] Visible focus indicators (`:focus-visible`) on all interactive elements
+- [ ] Color contrast meets WCAG AA (4.5:1 for normal text, 3:1 for large)
+- [ ] Error messages are associated with inputs via `aria-describedby` or `aria-errormessage`
+- [ ] Live regions (`aria-live`, `role="status"`, `role="alert"`) for dynamic content
+- [ ] Skip navigation link present on pages with repetitive navigation
+- [ ] Language attribute set on `<html>` element (in root layout)
+- [ ] Zoom/scale works without horizontal scroll up to 400%
+
+---
+
+## 12. Error Handling and Observability
+
+### Next.js Error Boundaries (`error.jsx`)
+
+Next.js App Router has built-in error boundary support via `error.jsx` files:
+
+```jsx
+// app/error.jsx — Global error boundary
+"use client"; // error.jsx MUST be a Client Component
+
+import styles from "./error.module.css";
+
+/**
+ * Global error boundary. Catches unhandled errors in the route tree.
+ *
+ * @param {Object} props
+ * @param {Error} props.error - The thrown error.
+ * @param {() => void} props.reset - Function to retry rendering the segment.
+ * @returns {JSX.Element}
+ */
+export default function GlobalError({ error, reset }) {
+  // Log to monitoring service in production
+  if (process.env.NODE_ENV === "production") {
+    // Sentry.captureException(error);
+  }
+
+  return (
+    <main className={styles.errorPage} role="alert">
+      <h1>Something went wrong</h1>
+      <p>
+        {error.message || "An unexpected error occurred. Please try again."}
+      </p>
+      <button onClick={reset}>Try again</button>
+      <a href="/">Go home</a>
+    </main>
+  );
+}
+```
+
+```jsx
+// app/blog/error.jsx — Feature-specific error boundary
+"use client";
+
+/**
+ * Blog section error boundary.
+ *
+ * @param {Object} props
+ * @param {Error} props.error
+ * @param {() => void} props.reset
+ * @returns {JSX.Element}
+ */
+export default function BlogError({ error, reset }) {
+  return (
+    <div role="alert">
+      <h2>Failed to load blog content</h2>
+      <p>{error.message}</p>
+      <button onClick={reset}>Retry</button>
+    </div>
+  );
+}
+```
+
+### Loading states (`loading.jsx`)
+
+```jsx
+// app/blog/loading.jsx — Automatic loading UI with Suspense
+import { Skeleton } from "@/shared/ui/Skeleton/Skeleton";
+
+/**
+ * Loading UI shown while the blog page segment is loading.
+ * @returns {JSX.Element}
+ */
+export default function BlogLoading() {
+  return (
+    <main>
+      <Skeleton width="200px" height="2rem" />
+      <div style={{ display: "grid", gap: "1rem", marginTop: "1rem" }}>
+        <Skeleton height="200px" />
+        <Skeleton height="200px" />
+        <Skeleton height="200px" />
+      </div>
+    </main>
+  );
+}
+```
+
+### Not Found pages
+
+```jsx
+// app/not-found.jsx — Global 404
+/**
+ * @returns {JSX.Element}
+ */
+export default function NotFound() {
+  return (
+    <main role="alert">
+      <h1>404 — Page Not Found</h1>
+      <p>
+        The page you&apos;re looking for doesn&apos;t exist or has been moved.
+      </p>
+      <a href="/">Go home</a>
+    </main>
+  );
+}
+```
+
+### Error boundary placement strategy
+
+```
+app/
+  layout.jsx        → Root layout (wraps everything)
+  error.jsx         → Global error boundary (catches unhandled errors)
+  loading.jsx       → Global loading state
+  not-found.jsx     → Global 404
+
+  blog/
+    error.jsx       → Blog-specific error boundary
+    loading.jsx     → Blog-specific loading state
+    page.jsx        → Blog list (RSC)
+    [slug]/
+      error.jsx     → Post-specific error boundary
+      loading.jsx   → Post-specific loading state
+      page.jsx      → Blog post detail (RSC)
+
+  dashboard/
+    error.jsx       → Dashboard-specific error boundary
+    loading.jsx
+    page.jsx
+```
+
+### Reusable Client-side Error Boundary
+
+For widget-level error isolation within a page (not route-level):
+
+```jsx
+// src/shared/middleware/ErrorBoundary.jsx
+"use client";
+
+import { Component } from "react";
+
+/**
+ * Reusable error boundary for client-side component isolation.
+ * Use for widget-level error handling within a page.
+ *
+ * @extends {Component<{children: React.ReactNode, fallback?: React.ReactNode | ((error: Error, reset: () => void) => React.ReactNode), onError?: (error: Error, errorInfo: import('react').ErrorInfo) => void, name?: string}, {hasError: boolean, error: Error|null}>}
+ */
+export class ErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error(
+      `[ErrorBoundary${this.props.name ? `:${this.props.name}` : ""}]`,
+      error,
+      errorInfo,
+    );
+    this.props.onError?.(error, errorInfo);
+  }
+
+  handleReset = () => {
+    this.setState({ hasError: false, error: null });
+  };
+
+  render() {
+    if (this.state.hasError) {
+      if (typeof this.props.fallback === "function") {
+        return this.props.fallback(this.state.error, this.handleReset);
+      }
+      return (
+        this.props.fallback || (
+          <div role="alert">
+            <h2>Something went wrong</h2>
+            <p>
+              {this.state.error?.message || "An unexpected error occurred."}
+            </p>
+            <button onClick={this.handleReset}>Try again</button>
+          </div>
+        )
+      );
+    }
+    return this.props.children;
+  }
+}
+```
+
+### Monitoring and telemetry
+
+```js
+// src/shared/middleware/monitoring.js
+
+/**
+ * @typedef {Object} LogEntry
+ * @property {'info' | 'warn' | 'error'} level
+ * @property {string} message
+ * @property {string} timestamp
+ * @property {string} [component]
+ * @property {string} [action]
+ * @property {string} [userId]
+ * @property {number} [duration]
+ * @property {Object} [metadata]
+ */
+
+class MonitoringService {
+  /** @type {MonitoringService | null} */
+  static instance = null;
+
+  static getInstance() {
+    if (!MonitoringService.instance) {
+      MonitoringService.instance = new MonitoringService();
+    }
+    return MonitoringService.instance;
+  }
+
+  /**
+   * Logs a structured entry to console (dev) or external service (prod).
+   *
+   * @param {Omit<LogEntry, 'timestamp'>} entry
+   */
+  log(entry) {
+    /** @type {LogEntry} */
+    const fullEntry = {
+      ...entry,
+      timestamp: new Date().toISOString(),
+    };
+
+    if (process.env.NODE_ENV === "development") {
+      const fn =
+        entry.level === "error"
+          ? console.error
+          : entry.level === "warn"
+            ? console.warn
+            : console.log;
+      fn(`[${entry.level.toUpperCase()}]`, entry.message, entry.metadata ?? "");
+    }
+
+    if (process.env.NODE_ENV === "production") {
+      this.sendToExternal(fullEntry);
+    }
+  }
+
+  /**
+   * @param {LogEntry} entry
+   * @private
+   */
+  sendToExternal(entry) {
+    // POST /api/monitoring/logs or use Sentry/Datadog SDK
+  }
+}
+
+export const monitoring = MonitoringService.getInstance();
+```
+
+---
+
+## 13. Security and Resilience
+
+### Next.js security headers
+
+```js
+// next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "X-XSS-Protection", value: "0" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=()",
+          },
+          {
+            key: "Content-Security-Policy",
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval'", // Next.js requires these in dev
+              "style-src 'self' 'unsafe-inline'",
+              "img-src 'self' https: data:",
+              "font-src 'self' data:",
+              "connect-src 'self' https://api.example.com",
+              "frame-ancestors 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+            ].join("; "),
+          },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload",
+          },
+        ],
+      },
+    ];
+  },
+};
+
+module.exports = nextConfig;
+```
+
+### Environment variable security
+
+```
+# .env.local — NEVER commit to git
+
+# Server-only variables (no NEXT_PUBLIC_ prefix — invisible to the browser)
+DATABASE_URL=postgresql://user:pass@localhost:5432/mydb
+API_SECRET_KEY=sk_live_xxx
+JWT_SECRET=your-secret-key
+SMTP_PASSWORD=your-smtp-password
+
+# Client-safe variables (NEXT_PUBLIC_ prefix — visible in browser bundle)
+NEXT_PUBLIC_API_URL=https://api.example.com
+NEXT_PUBLIC_ANALYTICS_ID=GA-XXXXX
+```
+
+> **Rule:** Never put secrets in `NEXT_PUBLIC_` variables. They are embedded in the client JavaScript bundle and visible to anyone.
+
+### CSRF protection with Server Actions
+
+Next.js Server Actions have built-in CSRF protection:
+
+- Actions are invoked via POST with a special action ID
+- Next.js validates the `Origin` header automatically
+- The action ID is not guessable
+
+For additional protection:
+
+```js
+// middleware.js
+import { NextResponse } from "next/server";
+
+/**
+ * Next.js middleware for security checks.
+ *
+ * @param {import('next/server').NextRequest} request
+ * @returns {NextResponse}
+ */
+export function middleware(request) {
+  const response = NextResponse.next();
+
+  // Validate Origin header for mutations
+  if (["POST", "PUT", "DELETE", "PATCH"].includes(request.method)) {
+    const origin = request.headers.get("origin");
+    const allowedOrigins = [
+      process.env.NEXT_PUBLIC_APP_URL,
+      "http://localhost:3000",
+    ];
+
+    if (origin && !allowedOrigins.includes(origin)) {
+      return new NextResponse("Forbidden", { status: 403 });
+    }
+  }
+
+  return response;
+}
+
+export const config = {
+  matcher: ["/api/:path*"],
+};
+```
+
+### XSS prevention
+
+```jsx
+// [NO] NEVER use dangerouslySetInnerHTML with unsanitized content
+<div dangerouslySetInnerHTML={{ __html: userContent }} /> // HIGHLY DANGEROUS
+
+// [OK] Use DOMPurify if HTML rendering is required
+import DOMPurify from 'dompurify';
+<div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(userContent) }} />
+
+// [OK] Prefer React's built-in escaping
+<div>{userContent}</div> // React escapes all text content by default
+
+// [OK] For URLs, validate protocols
+/**
+ * Validates and sanitizes a URL to prevent javascript: protocol attacks.
+ *
+ * @param {string} url
+ * @returns {string} Sanitized URL or empty string.
+ */
+function safeUrl(url) {
+  try {
+    const parsed = new URL(url);
+    if (!['http:', 'https:', 'mailto:', 'tel:'].includes(parsed.protocol)) {
+      return '';
+    }
+    return parsed.toString();
+  } catch {
+    return '';
+  }
+}
+```
+
+### Server Action input validation (mandatory)
+
+**Every Server Action MUST validate all inputs with Zod before processing.** No exceptions.
+
+```js
+// app/auth/actions/login.js
+"use server";
+
+import { z } from "zod";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
+const loginSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+});
+
+/**
+ * Server Action: Authenticate user.
+ *
+ * @param {Object|null} prevState
+ * @param {FormData} formData
+ * @returns {Promise<{error?: string}>}
+ */
+export async function login(prevState, formData) {
+  const parsed = loginSchema.safeParse({
+    email: formData.get("email"),
+    password: formData.get("password"),
+  });
+
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0].message };
+  }
+
+  try {
+    // const user = await authService.authenticate(parsed.data);
+    // const cookieStore = await cookies();
+    // cookieStore.set('session', token, { httpOnly: true, secure: true, sameSite: 'lax' });
+  } catch (error) {
+    return { error: "Invalid credentials" };
+  }
+
+  redirect("/dashboard");
+}
+```
+
+### Authentication middleware
+
+```js
+// middleware.js
+import { NextResponse } from "next/server";
+
+const protectedRoutes = ["/dashboard", "/admin", "/settings"];
+const authRoutes = ["/auth/login", "/auth/register"];
+
+/**
+ * @param {import('next/server').NextRequest} request
+ * @returns {NextResponse}
+ */
+export function middleware(request) {
+  const { pathname } = request.nextUrl;
+  const sessionToken = request.cookies.get("session")?.value;
+
+  // Redirect unauthenticated users away from protected routes
+  if (
+    protectedRoutes.some((route) => pathname.startsWith(route)) &&
+    !sessionToken
+  ) {
+    const loginUrl = new URL("/auth/login", request.url);
+    loginUrl.searchParams.set("callbackUrl", pathname);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  // Redirect authenticated users away from auth routes
+  if (authRoutes.some((route) => pathname.startsWith(route)) && sessionToken) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|api/health).*)"],
+};
+```
+
+### Security checklist
+
+- [ ] Security headers configured in `next.config.js`
+- [ ] CSP headers configured (adjusted for Next.js requirements)
+- [ ] No secrets in `NEXT_PUBLIC_` environment variables
+- [ ] All Server Actions validate inputs with Zod
+- [ ] Session tokens stored in `httpOnly`, `secure`, `sameSite` cookies
+- [ ] No `dangerouslySetInnerHTML` without DOMPurify
+- [ ] Authentication middleware protects private routes
+- [ ] Origin validation for API Route Handlers
+- [ ] Rate limiting on login/registration Server Actions
+- [ ] No sensitive data in client bundle or URL params
+- [ ] Permissions Policy restricts powerful browser APIs
+
+---
+
+## 14. Evaluation and Failure Detection
+
+### Anti-pattern Mapping
+
+| #   | Anti-pattern                                      | Severity | Description                                                       | Solution                                                                           |
+| --- | ------------------------------------------------- | -------- | ----------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| 1   | **Unnecessary `'use client'`**                    | CRITICAL | Adding the directive to components that don't need interactivity  | Default is Server Component; only add `'use client'` for hooks/events/browser APIs |
+| 2   | **Fetching data in Client Components**            | CRITICAL | Using `useEffect` + `fetch` when data could be fetched in an RSC  | Fetch in Server Components; pass data as props                                     |
+| 3   | **Missing Zod validation in Server Actions**      | CRITICAL | Processing form data without validation                           | Always `safeParse` with Zod before any DB/API operation                            |
+| 4   | **Importing server modules in Client Components** | CRITICAL | Using `fs`, `db`, or server-only env vars in `'use client'` files | Keep server logic in Server Components and Server Actions                          |
+| 5   | **Missing key props in lists**                    | CRITICAL | Using array index as `key` or omitting `key`                      | Use stable unique IDs; never use index                                             |
+| 6   | **Swallowing errors**                             | CRITICAL | Empty `catch(e) {}` or `try/catch` without feedback               | Always log errors; show user feedback; use monitoring                              |
+| 7   | **No form validation**                            | CRITICAL | Submitting forms without validation                               | Use Zod schemas; validate in Server Actions AND client-side                        |
+| 8   | **Secrets in `NEXT_PUBLIC_`**                     | CRITICAL | Exposing API keys or passwords in client bundle                   | Use server-only env vars (no prefix)                                               |
+| 9   | **Unnecessary effects**                           | HIGH     | `useEffect` for derived state or event handlers                   | Compute at render; use event handlers directly                                     |
+| 10  | **Giant components**                              | HIGH     | Components > 200 lines with multiple responsibilities             | Split into smaller components; use composition                                     |
+| 11  | **Memory leaks**                                  | HIGH     | Subscriptions, intervals, or listeners without cleanup            | Always return cleanup from `useEffect`; use AbortController                        |
+| 12  | **Ignoring error boundaries**                     | HIGH     | No `error.jsx` files in route segments                            | Add `error.jsx` at route level and feature level                                   |
+| 13  | **Raw style values**                              | MEDIUM   | Using hardcoded colors/spacing instead of CSS custom properties   | Use design tokens from `globals.css`                                               |
+| 14  | **Inline styles for layout**                      | MEDIUM   | Using `style={{ margin: '16px' }}` for layout                     | Use CSS Modules classes                                                            |
+| 15  | **Brittle selectors in tests**                    | MEDIUM   | Using CSS class names or DOM structure for queries                | Use `getByRole`, `getByLabelText`, `getByTestId`                                   |
+| 16  | **Missing JSDoc**                                 | HIGH     | Exported functions/components without type annotations            | All exports must have complete JSDoc                                               |
+| 17  | **No `loading.jsx`**                              | MEDIUM   | Missing loading states for async route segments                   | Add `loading.jsx` files or wrap with `<Suspense>`                                  |
+
+### Rúbrica de Niveles de Dominio
+
+#### Básico — Sintaxis y Componentes Simples
+
+**Qué sabe hacer:**
+
+- Crear componentes funcionales con JSDoc
+- Distinguir Server Components de Client Components
+- Usar `useState` y `useEffect` correctamente en Client Components
+- Pasar props con documentación JSDoc
+- Renderizar listas con `key`
+- Crear rutas básicas con App Router
+
+**Código esperado:**
+
+```jsx
+/**
+ * @param {Object} props
+ * @param {string} props.name
+ * @param {(id: string) => void} props.onDelete
+ * @returns {JSX.Element}
+ */
+export function Item({ name, onDelete }) {
+  return (
+    <li>
+      {name}
+      <button onClick={() => onDelete(name)}>Delete</button>
+    </li>
+  );
+}
+```
+
+#### Intermedio — Server Actions, Data Fetching, Validaciones
+
+**Qué sabe hacer:**
+
+- Implementar Server Actions con Zod validation
+- Usar `useActionState` y `useFormStatus` correctamente
+- Fetch data en Server Components con caching strategies (ISR, SSR)
+- Crear hooks personalizados con composición
+- Implementar Context API en subtrees de Client Components
+- Escribir CSS Modules siguiendo el sistema de tokens
+- Escribir tests unitarios y de integración
+- Implementar `loading.jsx` y `error.jsx`
+
+#### Avanzado — Arquitectura, Optimización, Patrones Distribuidos
+
+**Qué sabe hacer:**
+
+- Diseñar arquitecturas RSC-first con islands de interactividad
+- Implementar streaming con `<Suspense>` boundaries anidados
+- Optimizar con parallel data fetching y `Promise.all`
+- Manejar revalidación on-demand (`revalidatePath`, `revalidateTag`)
+- Diseñar middleware de autenticación y seguridad
+- Implementar `useOptimistic` para UX instantánea
+- Diseñar estrategias de testing completas (unit + integration + E2E)
+- Implementar monitoreo y telemetría custom
+- Manejar Zustand con hydration safety en Next.js
+- Implementar ISR, SSG y dynamic rendering strategies
+
+### Cuellos de Botella (Common Failure Points in Production)
+
+| #   | Bottleneck                            | Detection                               | Solution                                                                    |
+| --- | ------------------------------------- | --------------------------------------- | --------------------------------------------------------------------------- |
+| 1   | **Unnecessary Client Components**     | Large JS bundle                         | Audit `'use client'` usage; move to RSC where possible                      |
+| 2   | **Sequential data fetching**          | Slow page loads (waterfall)             | Use `Promise.all` for independent fetches                                   |
+| 3   | **Missing ISR / over-fetching**       | High TTFB; excessive origin load        | Use `revalidate` option; cache appropriately                                |
+| 4   | **Large images**                      | Slow LCP                                | Use `next/image` with proper sizes; add `priority` to above-the-fold images |
+| 5   | **N+1 queries in RSC**                | Slow page render                        | Batch DB queries; use `Promise.all`                                         |
+| 6   | **Memory leaks in Client Components** | Growing heap                            | Cleanup effects; remove event listeners; cancel fetch                       |
+| 7   | **Unoptimized fonts**                 | CLS > 0.1                               | Use `next/font`; `font-display: swap`                                       |
+| 8   | **Missing CDN/edge caching**          | Slow TTFB for static assets             | Set `Cache-Control` headers; deploy to edge                                 |
+| 9   | **State thrashing**                   | Frequent `setState` in quick succession | Debounce; batch updates; use `useReducer`                                   |
+| 10  | **Giant Server Component trees**      | Slow streaming start                    | Split into Suspense boundaries for progressive rendering                    |
+
+---
+
+## 15. Quick Reference
+
+### CLI commands
+
+| Command                         | Purpose                             |
+| ------------------------------- | ----------------------------------- |
+| `npx create-next-app@latest ./` | Create new Next.js project          |
+| `npm run dev`                   | Start dev server                    |
+| `npm run build`                 | Build for production                |
+| `npm run start`                 | Start production server             |
+| `npm run lint`                  | Run ESLint (next lint)              |
+| `npm run test`                  | Run unit/integration tests (Vitest) |
+| `npm run test:e2e`              | Run Playwright E2E tests            |
+| `npx playwright test`           | Run E2E tests directly              |
+
+### Architecture principles
+
+1. **Audit first, write second** — always check existing components and conventions before adding anything new
+2. **RSC by default** — every component is a Server Component unless it needs `'use client'`
+3. **JSDoc everywhere** — no undocumented exports; treat missing JSDoc as a bug
+4. **CSS Modules only** — no Tailwind, no CSS-in-JS, no inline styles for layout
+5. **Composition over inheritance** — prefer compound components, render props, and children
+6. **Data down, events up** — fetch data in Server Components, pass as props, use Server Actions for mutations
+7. **State as low as necessary** — keep state local; lift only when truly shared
+8. **Validate all inputs** — Zod schemas in every Server Action, no exceptions
+9. **Accessibility is not optional** — semantic HTML, keyboard nav, ARIA where needed
+10. **Errors must be visible** — to users (`error.jsx` fallback) and to developers (monitoring)
+11. **Performance is a feature** — use ISR over SSR; use `next/image` and `next/font`; measure before optimizing
+
+### Component type decision guide
+
+| Question                                       | Answer                                       |
+| ---------------------------------------------- | -------------------------------------------- |
+| Renders UI only, no state, no interactivity?   | Server Component (default — no directive)    |
+| Needs `useState`, `useEffect`, event handlers? | Client Component (`'use client'`)            |
+| Fetches data at render time?                   | Server Component with `async`                |
+| Used in multiple features?                     | `src/shared/ui/`                             |
+| Used in one feature only?                      | `src/features/<name>/components/`            |
+| Wraps behavior around children?                | Compound component (Context, `'use client'`) |
+
+### State placement decision guide
+
+| Question                             | Answer                                                    |
+| ------------------------------------ | --------------------------------------------------------- |
+| Data from the server (page load)?    | Fetch in Server Component, pass as props                  |
+| Used by one Client Component?        | `useState` / `useReducer`                                 |
+| Used by parent + children (client)?  | Lift state up + pass as props                             |
+| Used by unrelated Client Components? | React Context (low frequency) or Zustand (high frequency) |
+| Persisted across sessions?           | Zustand `persist` middleware or cookies                   |
+| URL-shareable state?                 | URL search params (`useSearchParams`)                     |
+| Mutation / form submission?          | Server Action + `useActionState`                          |
+
+### Data fetching decision guide
+
+| Question                         | Answer                                  |
+| -------------------------------- | --------------------------------------- |
+| Page data needed at render?      | `fetch()` in Server Component           |
+| Data rarely changes?             | `{ cache: 'force-cache' }` (default)    |
+| Data changes periodically?       | `{ next: { revalidate: N } }` (ISR)     |
+| Data is real-time/user-specific? | `{ cache: 'no-store' }` (dynamic)       |
+| After a mutation?                | `revalidatePath()` or `revalidateTag()` |
+| User-triggered mutation?         | Server Action                           |
+
+### Accessibility checklist
+
+- [ ] Semantic HTML elements used (`<nav>`, `<button>`, `<h1-h6>`, `<main>`, etc.)
+- [ ] All images have `alt` text (use `next/image`)
+- [ ] All form inputs have associated `<label>` or `aria-label`
+- [ ] All interactive elements are keyboard accessible
+- [ ] Visible focus indicators with `:focus-visible`
+- [ ] Color contrast ≥ 4.5:1 for normal text
+- [ ] Error messages linked to inputs via `aria-describedby`
+- [ ] Dynamic content uses `aria-live` regions
+- [ ] Skip navigation link present
+
+### Error handling checklist
+
+- [ ] `error.jsx` at root level (global catch)
+- [ ] `error.jsx` per route section (feature-level)
+- [ ] `loading.jsx` for async route segments
+- [ ] `not-found.jsx` for 404 pages
+- [ ] All Server Actions have try/catch with user-friendly messages
+- [ ] All Server Actions validate inputs with Zod
+- [ ] Errors are logged to monitoring service
+- [ ] Retry mechanisms for recoverable errors (`reset()` in error.jsx)
+
+### Security checklist
+
+- [ ] Security headers in `next.config.js`
+- [ ] CSP configured
+- [ ] No secrets in `NEXT_PUBLIC_` env vars
+- [ ] All Server Action inputs validated with Zod
+- [ ] Session tokens in `httpOnly`, `secure` cookies (not `localStorage`)
+- [ ] Authentication middleware protects private routes
+- [ ] No `dangerouslySetInnerHTML` without DOMPurify
+- [ ] Rate limiting on auth actions
+- [ ] Permissions Policy restricts powerful APIs
+
+### Resources
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Next.js App Router](https://nextjs.org/docs/app)
+- [React Server Components](https://nextjs.org/docs/app/building-your-application/rendering/server-components)
+- [Server Actions and Mutations](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations)
+- [Next.js Caching](https://nextjs.org/docs/app/building-your-application/caching)
+- [React Official Docs](https://react.dev/learn)
+- [React API Reference](https://react.dev/reference/react)
+- [useActionState](https://react.dev/reference/react/useActionState)
+- [useFormStatus](https://react.dev/reference/react-dom/hooks/useFormStatus)
+- [useOptimistic](https://react.dev/reference/react/useOptimistic)
+- [CSS Modules](https://nextjs.org/docs/app/building-your-application/styling/css-modules)
+- [JSDoc Reference](https://jsdoc.app/)
+- [Zod](https://zod.dev/)
+- [Zustand](https://zustand-demo.pmnd.rs/)
+- [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
+- [Playwright](https://playwright.dev/docs/intro)
+- [Vitest](https://vitest.dev/guide/)
+- [WCAG Quick Reference](https://www.w3.org/WAI/WCAG22/quickref/)
+- [web.dev Performance](https://web.dev/learn-core-web-vitals/)

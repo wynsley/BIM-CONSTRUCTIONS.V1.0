@@ -1,0 +1,89 @@
+.text {
+  /* Base styles applied to all text */
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* -----------------
+   VARIANTS (Colors)
+   ----------------- */
+.variant-default {
+  color: var(--color-gray-700);
+}
+
+.variant-primary {
+  color: var(--color-primary); /* Azul corporativo */
+}
+
+.variant-secondary {
+  color: var(--color-accent); /* Naranja corporativo */
+}
+
+.variant-muted {
+  color: var(--color-gray-500);
+}
+
+.variant-white {
+  color: var(--color-white);
+}
+
+.variant-inherit {
+  color: inherit;
+}
+
+/* -----------------
+    ALIGNMENTS
+   ----------------- */
+.align-left {
+  text-align: left;
+}
+
+.align-center {
+  text-align: center;
+}
+
+.align-right {
+  text-align: right;
+}
+
+/* -----------------
+    WEIGHTS
+   ----------------- */
+.weight-light {
+  font-weight: var(--font-weight-light);
+}
+
+.weight-normal {
+  font-weight: var(--font-weight-regular);
+}
+
+.weight-medium {
+  font-weight: var(--font-weight-medium);
+}
+
+.weight-bold {
+  font-weight: var(--font-weight-bold);
+}
+
+/* -----------------
+    SIZES
+   ----------------- */
+.size-sm {
+  font-size: var(--font-size-sm);
+}
+
+.size-base {
+  font-size: var(--font-size-base);
+}
+
+.size-lg {
+  font-size: var(--font-size-lg);
+}
+
+.size-xl {
+  font-size: var(--font-size-xl);
+}
+
+.size-inherit {
+  font-size: inherit;
+}

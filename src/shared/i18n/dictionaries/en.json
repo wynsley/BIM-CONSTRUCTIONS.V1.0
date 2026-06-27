@@ -1,0 +1,22 @@
+{
+  "navbar": {
+    "about": "About Us",
+    "projects": {
+      "title": "Projects",
+      "inProgress": "In Progress",
+      "finished": "Completed"
+    },
+    "services": "Services",
+    "contact": "Contact",
+    "cta": "Contact Us"
+  },
+  "home": {
+    "hero": {
+      "title": "Building the future with",
+      "highlight": "BIM Technology",
+      "description": "We offer engineering, construction, and project management services with cutting-edge BIM technology. We optimize resources, time, and quality at every stage.",
+      "btnProjects": "View Projects",
+      "btnContact": "Request a Quote"
+    }
+  }
+}

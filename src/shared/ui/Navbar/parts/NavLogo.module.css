@@ -1,0 +1,57 @@
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.logoImageWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.logoImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.logoTextGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.logoBim {
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  font-size: 2rem;
+}
+
+.logoSub {
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+  .logoImageWrapper {
+    width: 36px;
+    height: 36px;
+  }
+
+  .logoBim {
+    font-size: 1.5rem;
+  }
+
+  .logoSub {
+    font-size: 0.7rem;
+  }
+}

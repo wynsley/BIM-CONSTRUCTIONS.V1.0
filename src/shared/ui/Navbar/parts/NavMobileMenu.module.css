@@ -1,0 +1,124 @@
+.mobileOverlay {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: var(--navbar-height);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--color-white);
+  padding: var(--space-lg) var(--space-md);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition:
+    opacity var(--transition-smooth),
+    transform var(--transition-smooth),
+    visibility var(--transition-smooth);
+  z-index: 99;
+  overflow-y: auto;
+}
+
+.mobileOverlayOpen {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.mobileLinks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  list-style: none;
+  padding: 0;
+}
+
+.mobileLink {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  text-decoration: none;
+  padding: var(--space-md) var(--space-md);
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-fast);
+  background: none;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.mobileLink:hover {
+  background-color: var(--color-gray-50);
+}
+
+.mobileLinkActive {
+  background-color: var(--color-gray-50);
+}
+
+.mobileChevron {
+  width: 20px;
+  height: 20px;
+  transition: transform var(--transition-fast);
+  color: var(--color-gray-700);
+}
+
+.mobileChevronOpen {
+  transform: rotate(180deg);
+}
+
+.mobileSubLinks {
+  list-style: none;
+  padding-left: var(--space-lg);
+  display: none;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin-top: var(--space-xs);
+}
+
+.mobileSubLinksOpen {
+  display: flex;
+}
+
+.mobileSubLink {
+  display: block;
+  text-decoration: none;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-fast);
+}
+
+.mobileSubLink:hover {
+  background-color: var(--color-gray-50);
+}
+
+.mobileSubLinkActive {
+  background-color: transparent;
+}
+
+.mobileCta {
+  margin-top: var(--space-xl);
+  padding-top: var(--space-xl);
+  border-top: 1px solid var(--color-gray-200);
+}
+
+.mobileCta > a,
+.mobileCta > button {
+  width: 100%;
+  justify-content: center;
+}
+
+.ctaIcon {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+/* Hide on desktop */
+@media (min-width: 769px) {
+  .mobileOverlay {
+    display: none !important;
+  }
+}

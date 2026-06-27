@@ -1,0 +1,72 @@
+.container {
+  position: relative;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-xl);
+  z-index: 2; /* Sobre el overlay */
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 650px;
+  gap: var(--space-lg);
+  margin-left: 5%;
+}
+
+.title {
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.highlight {
+  color: var(--color-primary);
+  display: block;
+}
+
+.description {
+  line-height: 1.6;
+  opacity: 0.9;
+  max-width: 550px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 1024px) {
+  .content {
+    margin-left: 0; 
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 var(--space-md);
+  }
+
+  .content {
+    max-width: 100%;
+  }
+
+  .description {
+    font-size: var(--font-size-base); /* Un poco más pequeño en móviles */
+  }
+
+  .actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .actions > * {
+    width: 100%;
+    justify-content: center;
+  }
+}
