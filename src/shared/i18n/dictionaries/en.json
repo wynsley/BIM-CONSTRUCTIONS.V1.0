@@ -18,53 +18,5 @@
       "btnProjects": "View Projects",
       "btnContact": "Request a Quote"
     }
-  },
-  "sobreNosotros": {
-    "hero": {
-      "title": "\"WHO WE ARE\"",
-      "description": "We are a company specialized in the development of infrastructure and civil works, technical files, and basic engineering studies with wide recognition by multiple clients in the private sector.",
-      "btnProjects": "View Projects"
-    },
-    "banner": {
-      "title": "LEARN HOW WE STARTED",
-      "quote": "\"From the first blueprint to the final delivery, we build with passion, integrity and the highest technical precision in every detail.\""
-    },
-    "historia": {
-      "text": "\"Founded with the vision of transforming Peru's urban landscape, BIM CONSTRUCTIONS J/J S.A.C. was born as a project by engineers determined to raise the standards of civil construction. We started with small residential works, and today, thanks to the trust of our clients and the integration of cutting-edge BIM technology, we lead large-scale projects nationwide, ensuring safe, modern and sustainable structures.\"",
-      "card1Title": "PRECISION ENGINEERING",
-      "card1Desc": "Rigorous planning and resource optimization at every stage of the project.",
-      "card2Title": "AVANT-GARDE DESIGN",
-      "card2Desc": "Contemporary spaces that perfectly blend visual aesthetics with functionality.",
-      "card3Title": "BIM TECHNOLOGY",
-      "card3Desc": "Intelligent 3D modeling to reduce errors, costs and ensure exact delivery deadlines."
-    },
-    "mision": {
-      "title": "MISSION",
-      "text": "To satisfy the project needs of our clients with quality service and competitive market prices, opting for continuous improvement through BIM METHODOLOGY in industrial processes and buildings."
-    },
-    "vision": {
-      "title": "VISION",
-      "text": "To carry out impactful projects, from the most modest to the most prominent, for the benefit of society. In addition, we aspire to become a recognized and recommended company, where clients at a national and international level feel satisfied."
-    },
-    "valores": {
-      "sectionTitle": "VALUES THAT DEFINE US",
-      "sectionDesc": "\"Our organizational culture is based on solid principles that guide every decision in the field and in the office, ensuring excellence in every project we undertake.\"",
-      "v1Title": "SAFETY",
-      "v1Desc": "The integrity of our team and projects is our top priority.",
-      "v2Title": "QUALITY",
-      "v2Desc": "We accept nothing less than excellence in every finish and structure.",
-      "v3Title": "TRANSPARENCY",
-      "v3Desc": "Clear communication, honest budgets and strict deadline compliance.",
-      "v4Title": "INNOVATION",
-      "v4Desc": "We constantly evolve by adopting the latest technologies in the industry."
-    },
-    "stats": {
-      "stat1Number": "+50",
-      "stat1Label": "Projects Executed\nNationwide",
-      "stat2Number": "100%",
-      "stat2Label": "On-Time and\nOn-Budget Delivery",
-      "stat3Number": "98%",
-      "stat3Label": "Satisfied\nClients"
-    }
   }
 }
