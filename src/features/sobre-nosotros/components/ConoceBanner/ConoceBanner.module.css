@@ -1,8 +1,8 @@
 .banner {
   position: relative;
   width: 90%;
-  background-color: #0f2a3a;
-  /* dark teal BIM */
+  background-color: var(--color-primary);
+  /* azul corporativo BIM */
   overflow: hidden;
   z-index: 0;
   margin: 0 auto;

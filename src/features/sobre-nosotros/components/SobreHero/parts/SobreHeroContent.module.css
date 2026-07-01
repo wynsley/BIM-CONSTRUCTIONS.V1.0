@@ -23,8 +23,10 @@
 }
 
 .description {
-  color: var(--color-gray-700) !important;
-  line-height: 1.7;
+  font-size: clamp(1.05rem, 1.8vw, 1.2rem) !important;
+  color: var(--color-primary) !important;
+  font-weight: var(--font-weight-medium) !important;
+  line-height: 1.75;
   max-width: 480px;
 }
 

@@ -8,16 +8,16 @@
   display: flex;
   align-items: center;
   gap: var(--space-md);
-  background-color: #0f2a3a;
+  background-color: var(--color-primary);
   border-radius: 16px;
   padding: 8px; /* Espacio para que la imagen no choque con los bordes */
-  box-shadow: 0 4px 15px rgba(100, 180, 220, 0.4); /* Sombra brillante color cyan/celeste */
+  box-shadow: 0 4px 15px rgba(34, 60, 145, 0.4); /* Sombra azul corporativo BIM */
   transition: transform var(--transition-smooth), box-shadow var(--transition-smooth);
 }
 
 .card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(100, 180, 220, 0.6);
+  box-shadow: 0 8px 25px rgba(34, 60, 145, 0.6);
 }
 
 .cardThumb {

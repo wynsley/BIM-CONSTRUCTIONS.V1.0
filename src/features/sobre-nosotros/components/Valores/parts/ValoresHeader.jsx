@@ -16,6 +16,7 @@ export function ValoresHeader({ sectionTitle, sectionDesc }) {
       <Title level="h2" className={styles.sectionTitle}>
         {sectionTitle}
       </Title>
+      <div className={styles.titleAccent} aria-hidden="true" />
       <Text as="p" className={styles.sectionDesc}>
         {sectionDesc}
       </Text>
