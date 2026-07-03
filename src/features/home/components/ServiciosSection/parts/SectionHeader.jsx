@@ -1,3 +1,4 @@
+import { Title } from "@/shared/ui/Title/Title";
 import styles from "./SectionHeader.module.css";
 
 /**
@@ -14,9 +15,9 @@ export function SectionHeader({ title, headingId }) {
   return (
     <header className={styles.header}>
       <span className={styles.accent} aria-hidden="true" />
-      <h2 id={headingId} className={styles.title}>
+      <Title level="h2" id={headingId} className={styles.title}>
         {title}
-      </h2>
+      </Title>
     </header>
   );
 }

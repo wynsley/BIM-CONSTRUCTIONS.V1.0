@@ -20,5 +20,17 @@
       { "id": "construccion-civil", "title": "Civil Construction" },
       { "id": "remodelaciones", "title": "Renovations" }
     ]
+  },
+  "proyectos": {
+    "title": "Our Projects",
+    "description": "At BIM CONSTRUCTION we are committed to the well-being and safety of our clients when building their homes and/or businesses.",
+    "cardAriaSuffix": "— View project",
+    "items": [
+      { "id": "residencial", "title": "Modern Residential" },
+      { "id": "vial", "title": "Paving and Roads" },
+      { "id": "comercial", "title": "Commercial Renovation" },
+      { "id": "industrial", "title": "Industrial Plant" },
+      { "id": "bim", "title": "BIM Implementation" }
+    ]
   }
 }

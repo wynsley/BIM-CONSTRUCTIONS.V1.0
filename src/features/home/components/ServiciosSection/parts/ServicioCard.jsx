@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { Title } from "@/shared/ui/Title/Title";
+import { Text } from "@/shared/ui/Text/Text";
 import styles from "./ServicioCard.module.css";
 
 /**
@@ -31,10 +33,10 @@ export function ServicioCard({ title, imageSrc, imageAlt, href, ctaText = "Ver s
 
       {/* Contenido visible */}
       <div className={styles.cardContent}>
-        <h3 className={styles.cardTitle}>{title}</h3>
-        <span className={styles.cardCta} aria-hidden="true">
+        <Title level="h3" className={styles.cardTitle}>{title}</Title>
+        <Text as="span" className={styles.cardCta} aria-hidden="true">
           {ctaText}
-        </span>
+        </Text>
       </div>
     </a>
   );

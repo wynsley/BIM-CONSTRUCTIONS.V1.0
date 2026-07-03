@@ -20,5 +20,17 @@
       { "id": "construccion-civil", "title": "Construcción Civil" },
       { "id": "remodelaciones", "title": "Remodelaciones" }
     ]
+  },
+  "proyectos": {
+    "title": "Nuestros Proyectos",
+    "description": "En BIM CONSTRUCTION nos comprometemos con su bienestar y seguridad de nuestros clientes en cuanto a construir su vivienda y/o empresa.",
+    "cardAriaSuffix": "— Ver proyecto",
+    "items": [
+      { "id": "residencial", "title": "Residencial Moderno" },
+      { "id": "vial", "title": "Pavimentación y Vías" },
+      { "id": "comercial", "title": "Renovación Comercial" },
+      { "id": "industrial", "title": "Planta Industrial" },
+      { "id": "bim", "title": "Implementación BIM" }
+    ]
   }
 }

@@ -1,6 +1,7 @@
 import { Hero } from "@/features/home/components/Hero/Hero";
 import { AboutUsSection } from "@/features/home/components/AboutUsSection/AboutUsSection";
 import { ServiciosSection } from "@/features/home/components/ServiciosSection/ServiciosSection";
+import { ProyectosSection } from "@/features/home/components/ProyectosSection/ProyectosSection";
 import { getDictionary } from "@/shared/i18n/get-dictionary";
 
 /**
@@ -20,6 +21,7 @@ export default async function Home({ params }) {
       <Hero dict={dict.home} lang={lang} />
       <AboutUsSection dict={dict.home.aboutUs} />
       <ServiciosSection dict={dict.home.servicios} lang={lang} />
+      <ProyectosSection dict={dict.home.proyectos} lang={lang} />
     </main>
   );
 }

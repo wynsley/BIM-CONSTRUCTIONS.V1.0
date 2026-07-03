@@ -21,7 +21,7 @@ export function ValoresGrid({ dict }) {
     <div className={styles.grid}>
       {valores.map((valor) => (
         <div key={valor.id} className={styles.card} id={`valor-${valor.id}`}>
-          <span className={styles.cardNumber}>{valor.number}</span>
+          <Text as="span" className={styles.cardNumber}>{valor.number}</Text>
           <Title level="h3" className={styles.cardTitle}>
             {valor.title}
           </Title>

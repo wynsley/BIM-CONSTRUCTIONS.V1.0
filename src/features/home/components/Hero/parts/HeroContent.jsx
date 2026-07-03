@@ -16,7 +16,7 @@ export function HeroContent({ dict, lang }) {
     <div className={styles.container}>
       <div className={styles.content}>
         <Title as="h1" level="h1" variant="white" className={styles.title}>
-          {dict.title} <span className={styles.highlight}>{dict.highlight}</span>
+          {dict.title} <Text as="span" className={styles.highlight}>{dict.highlight}</Text>
         </Title>
         <Text variant="white" size="lg" className={styles.description}>
           {dict.description}

@@ -1,0 +1,39 @@
+.bentoGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--space-md);
+  width: 100%;
+}
+
+/* 
+ * Layout Bento Box para 5 items:
+ * Fila 1: 2 items de 50% (span 3 cada uno)
+ * Fila 2: 3 items de 33% (span 2 cada uno)
+ */
+.item1 { grid-column: span 3; }
+.item2 { grid-column: span 3; }
+.item3 { grid-column: span 2; }
+.item4 { grid-column: span 2; }
+.item5 { grid-column: span 2; }
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  /* En tablets, podemos apilar de a dos o dejar que todos ocupen el 100% */
+  .bentoGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .item1 { grid-column: span 2; }
+  .item2 { grid-column: span 1; }
+  .item3 { grid-column: span 1; }
+  .item4 { grid-column: span 1; }
+  .item5 { grid-column: span 1; }
+}
+
+@media (max-width: 600px) {
+  .bentoGrid {
+    grid-template-columns: 1fr;
+  }
+  .item1, .item2, .item3, .item4, .item5 {
+    grid-column: span 1;
+  }
+}
