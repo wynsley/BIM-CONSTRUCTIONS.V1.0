@@ -23,8 +23,8 @@ const bebasNeue = Bebas_Neue({
  */
 export default function GlobalNotFound() {
   return (
-    <html lang="es" className={`${montserrat.variable} ${bebasNeue.variable}`} data-scroll-behavior="smooth" suppressHydrationWarning>
-      <body suppressHydrationWarning>
+    <html lang="es" className={`${montserrat.variable} ${bebasNeue.variable}`} data-scroll-behavior="smooth" suppressHydrationWarning={true}>
+      <body suppressHydrationWarning={true}>
         <main>
           <NotFoundState dict={esDict.errors.notFound} lang="es" />
         </main>

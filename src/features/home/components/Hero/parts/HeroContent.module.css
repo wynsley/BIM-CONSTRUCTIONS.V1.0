@@ -24,6 +24,7 @@
 
 .highlight {
   color: var(--color-bim-orange);
+  font-size: var(--font-size-large);
   display: block;
 }
 

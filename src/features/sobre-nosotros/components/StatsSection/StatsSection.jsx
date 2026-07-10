@@ -1,4 +1,6 @@
-import Link from "next/link";
+import { Title } from "@/shared/ui/Title/Title";
+import { Text } from "@/shared/ui/Text/Text";
+import { Button } from "@/shared/ui/Button/Button";
 import styles from "./StatsSection.module.css";
 import { StatsMetrics } from "./parts/StatsMetrics";
 
@@ -21,7 +23,6 @@ export function StatsSection({ lang, dict }) {
         </div>
       </section>
 
-      {/* ---- Flecha circular hacia abajo ---- */}
       <div className={styles.arrowWrapper} aria-hidden="true">
         <div className={styles.arrowCircle}>
           <svg
@@ -40,22 +41,22 @@ export function StatsSection({ lang, dict }) {
         </div>
       </div>
 
-      {/* ---- Banner CTA final ---- */}
       <div className={styles.ctaBanner} id="cta-contacto">
         <div className={styles.ctaContent}>
           <div className={styles.ctaLeft}>
-            <p className={styles.ctaTitle}>{dict.ctaTitle}</p>
-            <p className={styles.ctaDesc}>{dict.ctaDesc}</p>
+            <Title level="h3" className={styles.ctaTitle}>{dict.ctaTitle}</Title>
+            <Text as="p" size="md" className={styles.ctaDesc}>{dict.ctaDesc}</Text>
           </div>
           <div className={styles.ctaRight}>
-            <span className={styles.ctaLabel}>{dict.ctaLabel}</span>
-            <Link
+            <Text as="span" size="sm" className={styles.ctaLabel}>{dict.ctaLabel}</Text>
+            <Button
               href={`/${lang}/contacto`}
+              variant="primary"
               className={styles.ctaBtn}
               id="btn-cotizar-stats"
             >
               {dict.ctaBtn}
-            </Link>
+            </Button>
           </div>
         </div>
       </div>

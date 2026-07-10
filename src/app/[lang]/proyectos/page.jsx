@@ -1,13 +1,20 @@
+import { getDictionary } from "@/shared/i18n/get-dictionary";
+import { ProyectosHero } from "@/features/proyectos/components/ProyectosHero/ProyectosHero";
+
 /**
  * Proyectos page — Server Component.
  *
- * @returns {JSX.Element}
+ * @param {Object} props
+ * @param {Promise<{ lang: string }>} props.params
+ * @returns {Promise<JSX.Element>}
  */
-export default function ProyectosPage() {
+export default async function ProyectosPage({ params }) {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
+
   return (
     <main>
-      <h1>Proyectos</h1>
-      <p>Explora nuestros proyectos de construcción más destacados.</p>
+      <ProyectosHero dict={dict.proyectos?.hero} lang={lang} />
     </main>
   );
 }

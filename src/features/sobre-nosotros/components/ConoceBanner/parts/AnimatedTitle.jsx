@@ -1,5 +1,7 @@
 "use client";
 
+import { Title } from "@/shared/ui/Title/Title";
+import { Text } from "@/shared/ui/Text/Text";
 import styles from "./AnimatedTitle.module.css";
 
 /**
@@ -14,21 +16,23 @@ export function AnimatedTitle({ text, className = "" }) {
   const chars = Array.from(text);
 
   return (
-    <h2
+    <Title
+      level="h2"
       className={`${styles.title} ${className}`}
       aria-label={text}
     >
       {chars.map((char, i) => (
-        <span
+        <Text
+          as="span"
           key={i}
           aria-hidden="true"
           className={styles.char}
           style={{ animationDelay: `${i * 0.1}s` }}
         >
           {char === " " ? "\u00A0" : char}
-        </span>
+        </Text>
       ))}
-    </h2>
+    </Title>
   );
 }
 
