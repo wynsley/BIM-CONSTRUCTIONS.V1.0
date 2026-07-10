@@ -2,30 +2,9 @@
   position: relative;
   width: 100%;
   background-color: var(--color-gray-50);
-  padding: var(--space-3xl) 0;
+  padding: var(--space-3xl) 0 var(--space-2xl);
   overflow: hidden;
 }
-
-/* ---- Fondo: rayos diagonales ---- */
-.bgRays {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.ray {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  background: linear-gradient(to top, rgba(180, 180, 180, 0.18), transparent);
-  transform-origin: bottom center;
-}
-
-.ray:nth-child(1) { transform: translateX(-50%) rotate(-25deg); width: 280px; height: 100%; }
-.ray:nth-child(2) { transform: translateX(-50%) rotate(-10deg); width: 220px; height: 100%; }
-.ray:nth-child(3) { transform: translateX(-50%) rotate(10deg);  width: 220px; height: 100%; }
-.ray:nth-child(4) { transform: translateX(-50%) rotate(25deg);  width: 280px; height: 100%; }
 
 /* ---- Contenedor ---- */
 .container {
@@ -36,9 +15,159 @@
   padding: 0 var(--space-2xl);
 }
 
+
+/* ---- Flecha circular ---- */
+.arrowWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-gray-50);
+  position: relative;
+  z-index: 2;
+  /* Espacio arriba y más espacio abajo para separarlo del cuadro negro */
+  padding: var(--space-lg) 0 var(--space-2xl);
+}
+
+.arrowCircle {
+  width: 64px;
+  height: 64px;
+  background-color: #0f0f0f;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45), 0 0 0 4px rgba(255, 255, 255, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.arrowCircle:hover {
+  transform: translateY(3px);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.55);
+}
+
+/* ---- Banner CTA negro ---- */
+/* padding-bottom extra reserva espacio visual antes del footer */
+.ctaBanner {
+  width: 100%;
+  background-color: var(--color-gray-50);
+  /* Continúa el fondo gris de la sección */
+  padding: 0 var(--space-2xl) calc(var(--space-3xl) + 3rem);
+  /* Espacio lateral y padding inferior */
+}
+
+.ctaContent {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  background-color: #0d0d0d;
+  padding: var(--space-3xl) var(--space-2xl);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2xl);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  /* Opcional: un borde sutil para que no sea tan cortante */
+  border-radius: 4px;
+}
+
+.ctaLeft {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.ctaTitle {
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 3vw, 2.4rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-white);
+  letter-spacing: 0.03em;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.ctaDesc {
+  font-family: var(--font-sans);
+  font-size: 1.2rem;
+  color: var(--color-accent);
+  font-style: italic;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.ctaRight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-shrink: 0;
+}
+
+.ctaLabel {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-white);
+  white-space: nowrap;
+}
+
+.ctaBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7rem 2.5rem;
+  background-color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  border-radius: 6px;
+  color: var(--color-white);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  transition: background-color var(--transition-smooth), border-color var(--transition-smooth), transform 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(34, 60, 145, 0.35);
+}
+
+.ctaBtn:hover {
+  background-color: #1a3bb5;
+  border-color: #1a3bb5;
+  color: var(--color-white);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(34, 60, 145, 0.5);
+}
+
 /* ---- Responsive ---- */
 @media (max-width: 768px) {
   .container {
     padding: 0 var(--space-lg);
+  }
+
+  .ctaBanner {
+    padding-bottom: calc(var(--space-2xl) + 2rem);
+  }
+
+  .ctaContent {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: var(--space-2xl) var(--space-lg); /* Restaurado el padding vertical */
+    gap: var(--space-xl);
+  }
+  
+  .ctaLeft {
+    align-items: center;
+  }
+
+  .ctaRight {
+    align-items: center;
+    width: 100%;
+  }
+
+  .ctaBtn {
+    width: 100%;
+    justify-content: center;
   }
 }

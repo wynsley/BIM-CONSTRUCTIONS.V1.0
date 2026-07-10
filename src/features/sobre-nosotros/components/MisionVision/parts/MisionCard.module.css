@@ -1,15 +1,31 @@
 .card {
-  background-color: var(--color-primary);
+  background: linear-gradient(135deg, var(--color-primary) 0%, #1a3a8f 100%);
   border-radius: var(--radius-md);
   padding: var(--space-2xl);
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
-  transition: transform var(--transition-smooth);
+  box-shadow: 0 8px 32px rgba(34, 60, 145, 0.25);
+  transition: transform var(--transition-smooth), box-shadow var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  pointer-events: none;
 }
 
 .card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(34, 60, 145, 0.35);
 }
 
 .cardTitle {

@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: var(--space-3xl);
+  gap: 0;
   padding: var(--space-2xl) 0 var(--space-3xl);
 }
 
@@ -12,6 +12,21 @@
   align-items: center;
   gap: var(--space-sm);
   text-align: center;
+  flex: 1;
+  padding: 0 var(--space-2xl);
+  position: relative;
+}
+
+/* Divisor vertical entre métricas */
+.metric:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 60%;
+  background: linear-gradient(to bottom, transparent, var(--color-gray-300), transparent);
 }
 
 .metricNumber {
@@ -33,8 +48,26 @@
 
 @media (max-width: 768px) {
   .metrics {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* 2x2 Grid en móvil */
-    gap: var(--space-2xl) var(--space-lg);
+    flex-direction: column;
+    gap: var(--space-2xl);
+    padding: var(--space-xl) 0 var(--space-2xl);
+  }
+
+  .metric {
+    padding: 0;
+    width: 100%;
+  }
+
+  /* Cambiar el divisor vertical por uno horizontal en móvil */
+  .metric:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    right: 50%;
+    top: auto;
+    bottom: calc(var(--space-2xl) * -0.5);
+    transform: translateX(50%);
+    width: 50%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--color-gray-300), transparent);
   }
 }

@@ -2,13 +2,11 @@
   position: relative;
   width: 90%;
   background-color: var(--color-primary);
-  /* azul corporativo BIM */
   overflow: hidden;
   z-index: 0;
-  margin: 0 auto;
-  /* Center horizontally, no vertical negative margin needed since it's inside Hero now */
+  margin: 0;
+  transform: translateY(-20px);
   clip-path: polygon(0 0, calc(100% - 120px) 0, 100% 100%, 0 100%);
-  margin-left: 0%;
 }
 
 .container {
@@ -16,12 +14,11 @@
   z-index: 1;
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 1rem var(--space-2xl);
-  /* Antes era var(--space-3xl) */
+  padding: 1.25rem var(--space-2xl);
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: 1rem;
+  gap: var(--space-xl);
 }
 
 /* ---- Divider vertical ---- */
@@ -30,38 +27,40 @@
   height: 80px;
   background-color: rgba(255, 255, 255, 0.35);
   border-radius: var(--radius-full);
+  flex-shrink: 0;
 }
 
-/* ---- Responsive ---- */
-@media (max-width: 1024px) {
+/* ---- Tablet (900px) ---- */
+@media (max-width: 900px) {
   .banner {
-    width: 90%;
+    width: 100%;
+    clip-path: polygon(0 0, calc(100% - 60px) 0, 100% 100%, 0 100%);
+  }
+
+  .container {
+    padding: 1.25rem var(--space-xl);
+    gap: var(--space-lg);
   }
 }
 
-@media (max-width: 768px) {
+/* ---- Móvil (640px): apila verticalmente ---- */
+@media (max-width: 640px) {
   .banner {
     width: 100%;
-    /* Que ocupe todo el ancho */
     clip-path: none;
-    /* Sin corte diagonal */
     border-radius: 0;
-    /* Sin bordes curvos para que pegue a los lados */
-    margin-bottom: 0;
-    /* Que pegue exactamente abajo, sin dejar "parte abierta" de fondo gris */
-    box-shadow: none;
   }
 
   .container {
     grid-template-columns: 1fr;
-    gap: var(--space-xl);
-    padding: 1rem var(--space-xl);
+    gap: var(--space-lg);
+    padding: var(--space-xl) var(--space-lg);
+    text-align: center;
   }
 
   .divider {
-    width: 60px;
+    width: 50px;
     height: 2px;
     margin: 0 auto;
-    /* Center horizontal line */
   }
 }

@@ -1,8 +1,8 @@
-import { Title } from "@/shared/ui/Title/Title";
 import styles from "./BannerLeft.module.css";
+import { AnimatedTitle } from "./AnimatedTitle";
 
 /**
- * Left side of ConoceBanner: title + accent separator.
+ * Left side of ConoceBanner: animated title + accent separator.
  *
  * @param {Object} props
  * @param {string} props.title
@@ -11,10 +11,9 @@ import styles from "./BannerLeft.module.css";
 export function BannerLeft({ title }) {
   return (
     <div className={styles.left}>
-      <Title level="h2" align="center" className={styles.title}>
-        {title}
-      </Title>
+      <AnimatedTitle text={title} />
       <div className={styles.separator} />
     </div>
   );
 }
+

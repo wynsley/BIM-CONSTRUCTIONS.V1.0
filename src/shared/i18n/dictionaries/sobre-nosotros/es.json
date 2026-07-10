@@ -42,7 +42,11 @@
     "stat1Label": "Proyectos Ejecutados\na Nivel Nacional",
     "stat2Number": "100%",
     "stat2Label": "Cumplimiento en\nPlazos y Presupuestos",
-    "stat3Number": "98%",
-    "stat3Label": "Clientes\nSatisfechos"
+    "stat3Number": "+10",
+    "stat3Label": "Años de Experiencia\nen Ingeniería Civil",
+    "ctaTitle": "¿TIENES UN PROYECTO EN MENTE? HAGÁMOSLO REALIDAD",
+    "ctaDesc": "Déjanos la planificación y la ingeniería en manos de expertos. Asegura tu inversión con un equipo que cumple.",
+    "ctaLabel": "¿Listo para empezar?",
+    "ctaBtn": "Contáctanos aquí"
   }
 }

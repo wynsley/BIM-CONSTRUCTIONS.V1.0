@@ -1,7 +1,7 @@
 .right {
   display: flex;
   align-items: center;
-  justify-content: center; /* Centrado automático */
+  justify-content: center;
 }
 
 .quote {
@@ -19,10 +19,19 @@
   font-style: italic;
   max-width: 520px;
   display: block;
-  /* margin-left: 90px; eliminado, ahora se centra automáticamente */
 }
 
-@media (max-width: 768px) {
+/* ---- Tablet ---- */
+@media (max-width: 900px) {
+  .quoteText {
+    font-size: var(--font-size-base) !important;
+    max-width: 100%;
+    line-height: 1.6;
+  }
+}
+
+/* ---- Móvil ---- */
+@media (max-width: 640px) {
   .right {
     justify-content: center;
   }
@@ -30,5 +39,6 @@
   .quoteText {
     text-align: center;
     font-size: var(--font-size-base) !important;
+    max-width: 100%;
   }
 }
