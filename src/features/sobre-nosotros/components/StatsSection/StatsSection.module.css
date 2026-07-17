@@ -58,7 +58,7 @@
 .ctaContent {
   max-width: var(--max-width);
   margin: 0 auto;
-  background-color: #0d0d0d;
+  background-color: var(--color-primary);
   padding: var(--space-3xl) var(--space-2xl);
   display: flex;
   align-items: center;
@@ -90,7 +90,7 @@
 .ctaDesc {
   font-family: var(--font-sans);
   font-size: 1.2rem;
-  color: var(--color-accent);
+  color: var(--color-white);
   font-style: italic;
   line-height: 1.5;
   margin: 0;
@@ -117,8 +117,8 @@
   align-items: center;
   justify-content: center;
   padding: 0.7rem 2.5rem;
-  background-color: var(--color-primary);
-  border: 2px solid var(--color-primary);
+  background-color: var(--color-accent);
+  border: 2px solid var(--color-accent);
   border-radius: 6px;
   color: var(--color-white);
   font-family: var(--font-sans);
@@ -128,15 +128,15 @@
   letter-spacing: 0.03em;
   transition: background-color var(--transition-smooth), border-color var(--transition-smooth), transform 0.2s ease, box-shadow 0.2s ease;
   white-space: nowrap;
-  box-shadow: 0 4px 16px rgba(34, 60, 145, 0.35);
+  box-shadow: 0 4px 16px rgba(var(--color-bim-orange-rgb), 0.35);
 }
 
 .ctaBtn:hover {
-  background-color: #1a3bb5;
-  border-color: #1a3bb5;
+  background-color: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
   color: var(--color-white);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(34, 60, 145, 0.5);
+  box-shadow: 0 8px 24px rgba(var(--color-bim-orange-rgb), 0.5);
 }
 
 /* ---- Responsive ---- */

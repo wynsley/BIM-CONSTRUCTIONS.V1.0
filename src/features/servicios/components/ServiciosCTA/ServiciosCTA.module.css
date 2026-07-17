@@ -1,0 +1,186 @@
+.section {
+  width: 100%;
+  padding: var(--space-3xl) 0;
+  background-color: var(--color-gray-50);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3xl);
+}
+
+/* --- Cajas Negras --- */
+.boxesContainer {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+  max-width: 900px;
+  padding: 0 var(--space-2xl);
+}
+
+.leftColumn,
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  flex: 1;
+}
+
+/* Staggering the columns */
+.leftColumn {
+  margin-top: 0;
+}
+
+.rightColumn {
+  margin-top: 3rem; /* Shift down */
+}
+
+.blackBox {
+  background-color: var(--color-primary);
+  width: 100%;
+  padding: var(--space-md) var(--space-lg);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--transition-smooth), box-shadow var(--transition-smooth);
+}
+
+.blackBox:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(var(--color-bim-blue-rgb), 0.3);
+}
+
+.boxTitle {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-white);
+  margin: 0;
+  text-align: center;
+}
+
+/* --- Banner CTA Azul --- */
+.bannerWrapper {
+  width: 100%;
+  padding: 0 var(--space-2xl);
+  display: flex;
+  justify-content: center;
+}
+
+.banner {
+  width: 100%;
+  max-width: 1000px;
+  background-color: var(--color-primary);
+  box-shadow: 0 10px 25px rgba(var(--color-black-rgb),0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2xl) var(--space-3xl);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(var(--color-black-rgb),0.1);
+}
+
+.bannerContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  z-index: 1;
+}
+
+.title {
+  font-family: var(--font-sans);
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-white);
+  margin: 0;
+}
+
+.description {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: rgba(var(--color-bim-white-rgb), 0.9);
+  max-width: 500px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 2rem;
+  background-color: var(--color-accent);
+  color: var(--color-white);
+  font-family: var(--font-sans);
+  font-weight: var(--font-weight-bold);
+  font-size: 0.9rem;
+  text-decoration: none;
+  border: 2px solid rgba(var(--color-bim-white-rgb), 0.5); /* Borde blanco / glow */
+  box-shadow: 0 0 10px rgba(var(--color-bim-white-rgb),0.3);
+  align-self: flex-start;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.btn:hover {
+  background-color: var(--color-accent-hover);
+  box-shadow: 0 0 15px rgba(var(--color-bim-white-rgb),0.5);
+  border-color: var(--color-white);
+}
+
+/* Logo en la derecha del banner */
+.logoWrapper {
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.6; /* Opacidad para que se vea como marca de agua / logo grande */
+  width: 250px;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.logo {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(var(--color-black-rgb),0.3));
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .boxesContainer {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .leftColumn, .rightColumn {
+    margin-top: 0;
+    gap: 1.5rem;
+  }
+  
+  .banner {
+    flex-direction: column;
+    padding: var(--space-xl);
+    text-align: center;
+  }
+  
+  .bannerContent {
+    align-items: center;
+  }
+  
+  .btn {
+    align-self: center;
+  }
+  
+  .logoWrapper {
+    opacity: 0.1;
+    right: 50%;
+    transform: translate(50%, -50%);
+  }
+}

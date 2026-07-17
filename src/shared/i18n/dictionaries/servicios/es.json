@@ -1,0 +1,57 @@
+{
+  "hero": {
+    "title": "Proyectos con Sellos de Excelencia y Precisión",
+    "description": "\"Explora nuestro portafolio de edificaciones civiles, arquitectura de vanguardia y soluciones con tecnología BIM que marcan la diferencia.\"",
+    "btnContact": "Solicita Asesoría"
+  },
+  "intro": {
+    "title": "¿Qué hacemos?",
+    "text": "\"En BIM Construction transformamos ideas en infraestructuras sostenibles y eficientes. Integramos la precisión de la metodología BIM en cada fase del ciclo constructivo, eliminando la incertidumbre, mitigando riesgos y optimizando los recursos económicos y temporales de nuestros clientes.\"",
+    "text2": "\"Creemos que la ingeniería no solo se trata de levantar estructuras, sino de diseñar el futuro con precisión milimétrica y transparencia absoluta.\""
+  },
+  "valor": {
+    "title": "El Valor de Nuestro Enfoque",
+    "text": "Fusionamos consultoría estratégica y metodología BIM para blindar tu presupuesto, mitigar riesgos técnicos y asegurar un control absoluto del avance de tu obra en tiempo real.",
+    "list": [
+      "Cumplimiento de plazos",
+      "Optimización de costos",
+      "Supervisión permanente",
+      "Tecnología BIM",
+      "Equipo especializado",
+      "Calidad garantizada"
+    ]
+  },
+  "panel": {
+    "title": "NUESTROS SERVICIOS",
+    "description": "Planificamos, organizamos y controlamos cada etapa del proyecto para garantizar el cumplimiento del alcance, presupuesto y cronograma.",
+    "btnContact": "Solicitar Información"
+  },
+    "services": {
+    "s1Title": "Gerencia de\nProyectos",
+    "s2Title": "Supervisión\nde obras",
+    "s3Title": "Contrucción de\nEdificaciones"
+  },
+  "cta": {
+    "title": "¿Listo para iniciar tu proyecto?",
+    "description": "Nuestro equipo está preparado para ayudarte desde la planificación hasta la entrega.",
+    "btn": "CONTÁCTANOS",
+    "boxes": [
+      {
+        "title": "Innovación Tecnológica",
+        "text": "Aplicamos las últimas herramientas BIM para garantizar precisión milimétrica."
+      },
+      {
+        "title": "Calidad y Precisión",
+        "text": "Estándares rigurosos en cada fase del proceso constructivo."
+      },
+      {
+        "title": "Atención Personalizada",
+        "text": "Acompañamiento constante y comunicación transparente en todo momento."
+      },
+      {
+        "title": "Sostenibilidad",
+        "text": "Prácticas eficientes que cuidan el medio ambiente y optimizan recursos."
+      }
+    ]
+  }
+}

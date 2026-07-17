@@ -1,0 +1,87 @@
+/* ============================================================
+   ServiciosIconos — fila de 3 iconos + título
+   Fondo blanco puro, iconos grandes centrados — igual al Figma
+   ============================================================ */
+
+.section {
+  width: 100%;
+  background-color: var(--color-white);
+  padding: var(--space-3xl) 0 var(--space-3xl);
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-2xl);
+}
+
+/* ── Fila de 3 items ── */
+.grid {
+  display: flex;
+  justify-content: flex-start;
+  gap: calc(var(--space-3xl) * 1.5);
+  flex-wrap: wrap;
+}
+
+/* ── Cada item: ícono + nombre ── */
+.iconCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-md);
+  max-width: 150px;
+  cursor: default;
+  transition: transform 0.25s ease;
+}
+
+.iconCard:hover {
+  transform: translateY(-4px);
+}
+
+/* ── Ícono ── */
+.iconWrap {
+  width: 56px;
+  height: 56px;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition-smooth);
+}
+
+.iconCard:hover .iconWrap {
+  color: var(--color-primary);
+}
+
+.iconWrap svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Título debajo del ícono ── */
+.label {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-gray-900);
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .grid {
+    gap: var(--space-xl);
+    justify-content: center;
+  }
+
+  .iconWrap {
+    width: 44px;
+    height: 44px;
+  }
+
+  .label {
+    font-size: 0.85rem;
+  }
+}

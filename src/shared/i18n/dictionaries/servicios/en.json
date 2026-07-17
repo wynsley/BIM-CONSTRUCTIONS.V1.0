@@ -1,0 +1,57 @@
+{
+  "hero": {
+    "title": "Projects with Seals of Excellence and Precision",
+    "description": "\"Explore our portfolio of civil buildings, avant-garde architecture and BIM technology solutions that make a difference.\"",
+    "btnContact": "Request Advisory"
+  },
+  "intro": {
+    "title": "What do we do?",
+    "text": " \"At BIM Construction we transform ideas into sustainable and efficient infrastructures. We integrate the precision of BIM methodology in every phase of the construction cycle, eliminating uncertainty, mitigating risks and optimizing the economic and time resources of our clients.\"",
+    "text2": "\"We believe that engineering is not just about raising structures, but about designing the future with millimetric precision and absolute transparency.\""
+  },
+  "panel": {
+    "title": "OUR SERVICES",
+    "description": "We plan, organize and control every stage of the project to ensure compliance with scope, budget and schedule.",
+    "btnContact": "Request Information"
+  },
+  "services": {
+    "s1Title": "Project\nManagement",
+    "s2Title": "Construction\nSupervision",
+    "s3Title": "Building\nConstruction"
+  },
+  "valor": {
+    "title": "The Value of Our Approach",
+    "text": "We merge strategic consulting and BIM methodology to shield your budget, mitigate technical risks, and ensure absolute control over the progress of your work in real time.",
+    "list": [
+      "Schedule compliance",
+      "Cost optimization",
+      "Permanent supervision",
+      "BIM Technology",
+      "Specialized team",
+      "Guaranteed quality"
+    ]
+  },
+  "cta": {
+    "title": "Ready to start your project?",
+    "description": "Our team is prepared to help you from planning to delivery.",
+    "btn": "CONTACT US",
+    "boxes": [
+      {
+        "title": "Technological Innovation",
+        "text": "We apply the latest BIM tools to guarantee millimetric precision."
+      },
+      {
+        "title": "Quality and Precision",
+        "text": "Rigorous standards in each phase of the construction process."
+      },
+      {
+        "title": "Personalized Attention",
+        "text": "Constant guidance and transparent communication at all times."
+      },
+      {
+        "title": "Sustainability",
+        "text": "Efficient practices that protect the environment and optimize resources."
+      }
+    ]
+  }
+}
