@@ -11,5 +11,12 @@
       "terminado": "COMPLETED"
     },
     "emptyState": "No projects found for this filter."
+  },
+  "porQueElegirnos": {
+    "title": "WHY CHOOSE US?",
+    "calidad": "QUALITY",
+    "puntualidad": "PUNCTUALITY",
+    "tecnologia": "TECHNOLOGY",
+    "seguridad": "SAFETY"
   }
 }

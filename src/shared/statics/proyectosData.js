@@ -46,3 +46,10 @@ export const PROYECTOS_DATA = [
     image: "/images/proyectos/university_pavilion_1784149350042.png"
   }
 ];
+
+export const POR_QUE_ELEGIRNOS_CARDS = [
+  { id: "calidad", imageSrc: "/images/proyectos/elegirnos-calidad.png" },
+  { id: "puntualidad", imageSrc: "/images/proyectos/elegirnos-puntualidad.png" },
+  { id: "tecnologia", imageSrc: "/images/proyectos/elegirnos-tecnologia.png" },
+  { id: "seguridad", imageSrc: "/images/proyectos/elegirnos-seguridad.png" }
+];

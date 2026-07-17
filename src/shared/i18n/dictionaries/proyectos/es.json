@@ -11,5 +11,12 @@
       "terminado": "TERMINADOS"
     },
     "emptyState": "No se encontraron proyectos para este filtro."
+  },
+  "porQueElegirnos": {
+    "title": "¿POR QUÉ ELEGIRNOS?",
+    "calidad": "CALIDAD",
+    "puntualidad": "PUNTUALIDAD",
+    "tecnologia": "TECNOLOGÍA",
+    "seguridad": "SEGURIDAD"
   }
 }
