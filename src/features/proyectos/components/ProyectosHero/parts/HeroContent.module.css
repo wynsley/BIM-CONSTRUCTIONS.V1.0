@@ -8,14 +8,14 @@
 .title {
   font-family: var(--font-heading);
   font-size: clamp(2rem, 4vw, 3.5rem);
-  color: var(--color-primary);
+  color: var(--color-white);
   text-transform: uppercase;
   line-height: 1.1;
   letter-spacing: 0.02em;
 }
 
 .description {
-  color: var(--color-gray-800);
+  color: var(--color-gray-100);
   font-weight: var(--font-weight-medium);
   line-height: 1.6;
 }

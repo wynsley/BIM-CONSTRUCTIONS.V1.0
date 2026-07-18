@@ -34,12 +34,21 @@
 }
 
 /* ---- Responsive ---- */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .nav {
     padding: 0 var(--space-md);
   }
 
   .actions {
     display: none;
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1024px) {
+  .nav {
+    padding: 0 var(--space-md);
+  }
+  .actions {
+    gap: var(--space-sm);
   }
 }
