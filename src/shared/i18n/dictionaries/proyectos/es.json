@@ -50,6 +50,10 @@
       "prevAria": "Imagen anterior",
       "nextAria": "Siguiente imagen",
       "defaultDescription": "La información detallada de este proyecto se encuentra actualmente en redacción. Próximamente actualizaremos esta sección con todos los pormenores."
+    },
+    "location": {
+      "title": "Ubicación del Proyecto",
+      "mapTitle": "Mapa de ubicación del proyecto"
     }
   }
 }

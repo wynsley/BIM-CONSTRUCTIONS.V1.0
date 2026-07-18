@@ -50,6 +50,10 @@
       "prevAria": "Previous image",
       "nextAria": "Next image",
       "defaultDescription": "Detailed information for this project is currently being drafted. We will update this section soon."
+    },
+    "location": {
+      "title": "Project Location",
+      "mapTitle": "Project location map"
     }
   }
 }

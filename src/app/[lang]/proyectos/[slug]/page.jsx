@@ -1,6 +1,7 @@
 import { getDictionary } from "@/shared/i18n/get-dictionary";
 import { ProyectoDetalleHero } from "@/features/proyectos/components/ProyectoDetalleHero/ProyectoDetalleHero";
 import { ProyectoDetalleInfo } from "@/features/proyectos/components/ProyectoDetalleInfo/ProyectoDetalleInfo";
+import { ProyectoDetalleLocation } from "@/features/proyectos/components/ProyectoDetalleLocation/ProyectoDetalleLocation";
 import { PROYECTOS_DATA } from "@/shared/statics/proyectosData";
 import { notFound } from "next/navigation";
 
@@ -13,15 +14,15 @@ import { notFound } from "next/navigation";
  */
 export default async function ProyectoDetallePage({ params }) {
   const { lang, slug } = await params;
-  const dict = await getDictionary(lang);
-
-  const proyecto = PROYECTOS_DATA.find((p) => p.slug === slug);
+  
+  const proyecto = PROYECTOS_DATA.find(p => p.slug === slug);
 
   if (!proyecto) {
     notFound();
   }
 
-  // Traducción dinámica del estado
+  const dict = await getDictionary(lang);
+
   const statusText =
     proyecto.status === "terminado"
       ? dict.proyectos?.projectDetails?.status?.completed || "Proyecto Terminado"
@@ -29,15 +30,20 @@ export default async function ProyectoDetallePage({ params }) {
 
   return (
     <main>
+      {/* Hero del Proyecto */}
       <ProyectoDetalleHero 
-        title={proyecto.detailHeroTitle} 
-        imageSrc={proyecto.detailHeroImage} 
+        title={proyecto.detailHeroTitle || proyecto.title}
+        imageSrc={proyecto.detailHeroImage || proyecto.image}
         statusText={statusText}
         backText={dict.proyectos?.projectDetails?.backButton || "Volver a Proyectos"}
         lang={lang}
       />
+      
       {/* Sección de Información y Galería */}
       <ProyectoDetalleInfo proyecto={proyecto} dict={dict} statusText={statusText} />
+
+      {/* Sección de Ubicación */}
+      <ProyectoDetalleLocation dict={dict} />
       
     </main>
   );

@@ -1,0 +1,14 @@
+.titleContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.titleIcon {
+  color: var(--color-accent);
+}
+
+.title {
+  margin: 0;
+}
