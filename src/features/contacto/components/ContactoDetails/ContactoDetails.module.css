@@ -1,0 +1,38 @@
+.section {
+  width: 100%;
+  padding: var(--space-4xl) 0;
+  background-color: var(--color-white);
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-xl);
+  display: flex;
+  flex-direction: column;
+}
+
+.topGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr; /* Right side form is wider */
+  gap: var(--space-4xl);
+  align-items: center; /* Center vertically relative to each other */
+}
+
+.leftCol {
+  display: flex;
+  flex-direction: column;
+}
+
+.rightCol {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .topGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-3xl);
+  }
+}

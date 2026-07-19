@@ -1,12 +1,13 @@
 import { getDictionary } from "@/shared/i18n/get-dictionary";
 import { ContactoHero } from "@/features/contacto/components/ContactoHero/ContactoHero";
+import { ContactoDetails } from "@/features/contacto/components/ContactoDetails/ContactoDetails";
 
 /**
  * Contacto page — Server Component.
  *
  * @param {Object} props
  * @param {Promise<{lang: string}>} props.params
- * @returns {JSX.Element}
+ * @returns {Promise<JSX.Element>}
  */
 export default async function ContactoPage({ params }) {
   const { lang } = await params;
@@ -15,6 +16,7 @@ export default async function ContactoPage({ params }) {
   return (
     <main>
       <ContactoHero dict={dict.contacto?.hero || {}} />
+      <ContactoDetails dict={dict.contacto?.details || {}} />
     </main>
   );
 }

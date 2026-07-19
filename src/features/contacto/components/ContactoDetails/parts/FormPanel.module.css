@@ -1,0 +1,24 @@
+.slantedWrapper {
+  background-color: var(--color-gray-100);
+  /*
+    Clip-path creates the signature diagonal cut on the top-left corner.
+    6% on desktop / 3% on mobile for a subtler cut.
+  */
+  clip-path: polygon(0 6%, 100% 0, 100% 100%, 0 100%);
+  width: 100%;
+  border-radius: 4px;
+}
+
+.innerPadding {
+  /*
+    Extra top padding compensates for the clipped area
+    so the form title doesn't sit too close to the edge.
+  */
+  padding: var(--space-3xl) var(--space-2xl) var(--space-2xl) var(--space-2xl);
+}
+
+@media (max-width: 900px) {
+  .slantedWrapper {
+    clip-path: polygon(0 3%, 100% 0, 100% 100%, 0 100%);
+  }
+}

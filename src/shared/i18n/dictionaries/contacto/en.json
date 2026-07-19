@@ -2,5 +2,49 @@
   "hero": {
     "title": "CONTACT US",
     "description": "Contact us and discover how BIM and our financial management guarantee the budget and deadlines of your project."
+  },
+  "details": {
+    "cards": {
+      "office": {
+        "title": "Visit Our Office",
+        "text": "Av. Circunvalación del Club Golf Los Incas 134 Tower 1 Of. 802."
+      },
+      "email": {
+        "title": "Send Email",
+        "text": "contacto@jlvconsultores.com"
+      },
+      "phone": {
+        "title": "Make a Call",
+        "text": "(511) 651-0900 / 999 333 637"
+      }
+    },
+    "form": {
+      "title": "Leave Us a Message",
+      "subtitle": "\"Please complete the form and detail your request, we will respond shortly.\"",
+      "fields": {
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone",
+        "address": "Address",
+        "services": "Services",
+        "message": "Message......"
+      },
+      "submit": "SEND MESSAGE",
+      "submitting": "SENDING...",
+      "serviceOptions": {
+        "placeholder": "Services",
+        "construccion": "Construction",
+        "diseno": "Design",
+        "consultoria": "BIM Consulting",
+        "supervision": "Site Supervision"
+      }
+    },
+    "footer": {
+      "weekdaysTitle": "Monday - Friday",
+      "weekdaysHours": "8:00 am - 6:50 pm",
+      "weekendTitle": "Sundays",
+      "weekendHours": "10:30 am - 4:15 pm",
+      "socialsTitle": "Social Networks"
+    }
   }
 }
