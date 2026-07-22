@@ -45,9 +45,6 @@
   }
 }
 
-.socialTitle {
-  /* color removed, handled by JSX variant */
-}
 
 .socialLinks {
   display: flex;

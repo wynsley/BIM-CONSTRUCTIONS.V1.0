@@ -20,8 +20,6 @@ function escapeHtml(str) {
     .replace(/'/g, '&#39;');
 }
 
-// Initialize Resend with the API key from the environment
-// Ensure RESEND_API_KEY is defined in .env.local
 const resend = new Resend(process.env.RESEND_API_KEY || "re_dummy_key_for_build");
 
 /**
@@ -35,10 +33,7 @@ export async function sendContactNotificationEmail(data) {
 
   try {
     const { data: result, error } = await resend.emails.send({
-      // In production, this should be a verified domain you own (e.g., info@bimconstructions.com)
-      // Since we don't have one configured yet, Resend allows testing with 'onboarding@resend.dev'
       from: "BIM Constructions Web <onboarding@resend.dev>",
-      // The email address where the CEO/Admin wants to receive messages
       to: [process.env.ADMIN_EMAIL || "admin@example.com"],
       subject: `Nuevo mensaje de contacto: ${name}`,
       replyTo: email,

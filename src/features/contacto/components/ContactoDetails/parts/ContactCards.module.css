@@ -3,7 +3,6 @@
   flex-direction: column;
   gap: var(--space-2xl);
   width: 100%;
-  /* Extra left padding so card icon boxes (which bleed 28px to the left) stay visible */
   padding-left: var(--space-2xl);
 }
 

@@ -10,7 +10,6 @@
   gap: var(--space-2xl);
 }
 
-/* ── Hours ── */
 .hoursWrapper {
   display: flex;
   align-items: center;
@@ -22,7 +21,6 @@
   color: var(--color-secondary);
 }
 
-/* ── Socials ── */
 .socialsWrapper {
   display: flex;
   align-items: center;
@@ -58,19 +56,17 @@
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
 }
 
-/* ── Brand colours ── */
 .facebook  { background-color: #1877F2; }
 .whatsapp  { background-color: #25D366; }
 .youtube   { background-color: #FF0000; }
 .instagram { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
 
-/* ── Responsive ── */
 @media (max-width: 900px) {
   .footerContainer {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: var(--space-3xl); /* Add a larger gap between hours and socials on mobile */
+    gap: var(--space-3xl); 
   }
 
   .hoursWrapper {

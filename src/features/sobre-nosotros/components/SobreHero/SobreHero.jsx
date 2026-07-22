@@ -18,12 +18,10 @@ export function SobreHero({ lang, dict, bannerDict }) {
     <section className={styles.hero}>
       <SobreHeroBg />
       
-      {/* Content vertically centered */}
       <div className={styles.contentWrapper}>
         <SobreHeroContent dict={dict} lang={lang} />
       </div>
 
-      {/* Banner pushed to the bottom */}
       <div className={styles.bannerWrapper}>
         <ConoceBanner dict={bannerDict} />
       </div>

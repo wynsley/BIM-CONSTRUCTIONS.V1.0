@@ -26,7 +26,6 @@
   outline-offset: 2px;
 }
 
-/* ---- Variants ---- */
 
 .primary {
   background-color: var(--color-primary);
@@ -62,7 +61,6 @@
   color: var(--color-primary);
 }
 
-/* ---- Sizes ---- */
 
 .sm {
   padding: var(--space-xs) var(--space-md);

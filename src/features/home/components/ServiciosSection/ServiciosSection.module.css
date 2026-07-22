@@ -6,7 +6,6 @@
   overflow: hidden;
 }
 
-/* Imagen de fondo panorámica */
 .backgroundImage {
   position: absolute;
   inset: 0;
@@ -16,7 +15,6 @@
   z-index: 0;
 }
 
-/* Overlay con gradiente azul corporativo */
 .overlay {
   position: absolute;
   inset: 0;
@@ -28,7 +26,6 @@
   z-index: 1;
 }
 
-/* Contenedor centrado */
 .container {
   position: relative;
   z-index: 2;

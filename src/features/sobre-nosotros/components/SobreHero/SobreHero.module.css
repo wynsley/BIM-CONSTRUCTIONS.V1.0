@@ -8,7 +8,7 @@
 }
 
 .contentWrapper {
-  flex: 1; /* Takes up all available space, pushing banner to the bottom */
+  flex: 1; 
   display: flex;
   align-items: center;
   width: 100%;
@@ -18,15 +18,14 @@
   width: 100%;
   position: relative;
   z-index: 10;
-  transform: translateY(50%); /* Pushes the banner down so it perfectly straddles the gray hero and the white section below */
+  transform: translateY(50%); 
 }
 
-/* ---- Responsive ---- */
 @media (max-width: 768px) {
   .contentWrapper {
-    padding-bottom: var(--space-3xl); /* Safety buffer so the button never touches the banner */
+    padding-bottom: var(--space-3xl); 
   }
   .hero {
-    min-height: 80vh; /* Un poco más de altura para dar espacio a todo */
+    min-height: 80vh; 
   }
 }

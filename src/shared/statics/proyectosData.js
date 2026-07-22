@@ -1,7 +1,3 @@
-/**
- * Data with simulated project information, localized for 'es' and 'en'.
- * status: "ejecucion" | "terminado"
- */
 export const PROYECTOS_DATA = {
   es: [
     {

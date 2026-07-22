@@ -1,14 +1,13 @@
 .hero {
   position: relative;
   width: 100%;
-  height: 90vh; /* Ocupa casi toda la pantalla como el prototipo */
+  height: 90vh; 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  /* El overlay oscuro degradado para dar contraste, más sutil en este caso porque la imagen es gris clara */
   background-color: var(--color-gray-900);
 }
 
@@ -32,10 +31,9 @@
   margin: 0 auto;
   padding: 0 var(--space-xl) var(--space-3xl) var(--space-xl);
   display: flex;
-  align-items: center; /* Alinea verticalmente al centro de la fila */
+  align-items: center; 
   justify-content: space-between;
   
-  /* Animación de entrada */
   animation: fadeInUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
   opacity: 0;
   transform: translateY(30px);
@@ -111,7 +109,6 @@
   }
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .contentContainer {
     flex-direction: column;

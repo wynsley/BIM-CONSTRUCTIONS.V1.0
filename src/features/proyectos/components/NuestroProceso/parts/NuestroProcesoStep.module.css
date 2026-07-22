@@ -6,7 +6,6 @@
   width: 200px;
 }
 
-/* Contenedor del ícono */
 .iconContainer {
   width: 80px;
   height: 80px;
@@ -29,7 +28,6 @@
   box-shadow: 0 15px 40px var(--color-primary);
 }
 
-/* Número de agua de fondo */
 .watermark {
   position: absolute;
   font-size: 6rem;
@@ -39,7 +37,7 @@
   top: -20px;
   user-select: none;
   z-index: 0;
-  display: none; /* Oculto en desktop */
+  display: none; 
 }
 
 .stepTitle {
@@ -56,7 +54,6 @@
   box-shadow: 0 2px 10px rgba(var(--color-black-rgb), 0.05);
 }
 
-/* Responsividad para móviles */
 @media (max-width: 900px) {
   .step {
     flex-direction: row;
@@ -74,19 +71,19 @@
     background: transparent;
     box-shadow: none;
     font-size: 1.4rem;
-    font-weight: 900; /* Letra más ancha */
-    margin-left: 55px; /* Evita que el texto y el número se superpongan */
+    font-weight: 900; 
+    margin-left: 55px; 
     color: var(--color-primary) !important; 
     text-shadow: 
       -1px -1px 0 var(--color-white),
-       1px -1px 0 var(--color-white),
+      1px -1px 0 var(--color-white),
       -1px  1px 0 var(--color-white),
-       1px  1px 0 var(--color-white),
-       0 0 10px rgba(255, 255, 255, 0.8);
+      1px  1px 0 var(--color-white),
+      0 0 10px rgba(255, 255, 255, 0.8);
   }
   
   .watermark {
-    display: block; /* Mostrar en móvil */
+    display: block; 
     left: 90px;
     top: 50%;
     transform: translateY(-50%);
@@ -108,7 +105,7 @@
   .stepTitle {
     font-size: 1.1rem;
     text-align: left;
-    margin-left: 50px; /* Ajuste para evitar superposición en pantallas más pequeñas */
+    margin-left: 50px; 
   }
 
   .watermark {

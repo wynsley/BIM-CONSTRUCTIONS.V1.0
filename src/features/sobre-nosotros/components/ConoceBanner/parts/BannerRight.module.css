@@ -21,7 +21,6 @@
   display: block;
 }
 
-/* ---- Tablet ---- */
 @media (max-width: 900px) {
   .quoteText {
     font-size: var(--font-size-base) !important;
@@ -30,7 +29,6 @@
   }
 }
 
-/* ---- Móvil ---- */
 @media (max-width: 640px) {
   .right {
     justify-content: center;

@@ -28,7 +28,6 @@ import styles from "./ServiciosSection.module.css";
 export function ServiciosSection({ dict, lang }) {
   return (
     <section className={styles.section} aria-labelledby="servicios-heading">
-      {/* Imagen panorámica de fondo */}
       <Image
         src="/images/servicios/construccion-civil.png"
         alt=""
@@ -39,7 +38,6 @@ export function ServiciosSection({ dict, lang }) {
         priority={false}
       />
 
-      {/* Overlay azul corporativo */}
       <div className={styles.overlay} aria-hidden="true" />
 
       <div className={styles.container}>

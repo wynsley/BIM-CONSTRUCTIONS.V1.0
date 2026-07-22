@@ -16,7 +16,6 @@ import { Text } from "@/shared/ui/Text/Text";
 export function ContactCard({ icon, title, text, highlighted = false }) {
   return (
     <div className={`${styles.card} ${highlighted ? styles.highlighted : ""}`}>
-      {/* Icon box — overlaps the top-left corner */}
       <div className={styles.iconBox} aria-hidden="true">
         {icon}
       </div>

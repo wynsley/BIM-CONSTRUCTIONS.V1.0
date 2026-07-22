@@ -31,7 +31,6 @@ export default async function ProyectoDetallePage({ params }) {
 
   return (
     <main>
-      {/* Hero del Proyecto */}
       <ProyectoDetalleHero 
         title={proyecto.detailHeroTitle || proyecto.title}
         imageSrc={proyecto.detailHeroImage || proyecto.image}
@@ -40,10 +39,8 @@ export default async function ProyectoDetallePage({ params }) {
         lang={lang}
       />
       
-      {/* Sección de Información y Galería */}
       <ProyectoDetalleInfo proyecto={proyecto} dict={dict} statusText={statusText} />
 
-      {/* Sección de Ubicación */}
       <ProyectoDetalleLocation dict={dict} />
       
     </main>

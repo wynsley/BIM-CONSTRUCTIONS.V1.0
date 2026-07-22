@@ -13,7 +13,6 @@
   padding: 0 var(--space-xl);
 }
 
-/* ---- Responsive (Escritorio) ---- */
 @media (min-width: 1024px) {
   .section {
     padding: calc(var(--space-xl) * 2) 0;
@@ -33,7 +32,6 @@
   }
 }
 
-/* ---- Responsive (Móvil) ---- */
 @media (max-width: 768px) {
   .container {
     padding: var(--space-md);

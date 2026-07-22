@@ -9,8 +9,6 @@
  */
 export function getLocalizedData(data, lang) {
   if (!data) return [];
-  // Prefer the requested language; fallback to Spanish (es) which is the primary source.
   const localized = data[lang] ?? data['es'];
-  // Ensure we always return an array to avoid runtime errors.
   return Array.isArray(localized) ? localized : [];
 }

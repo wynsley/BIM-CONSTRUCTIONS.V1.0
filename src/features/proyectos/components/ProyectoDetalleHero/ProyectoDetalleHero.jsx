@@ -26,13 +26,11 @@ export function ProyectoDetalleHero({ title, imageSrc, statusText, backText, lan
       aria-label={`Hero para ${title}`}
     >
       <div className={styles.contentContainer}>
-        {/* Enlace para volver a proyectos (Izquierda) */}
         <Link href={`/${lang}/proyectos`} className={styles.backLink}>
           <ArrowLeft size={20} />
           <span>{backText}</span>
         </Link>
         
-        {/* Título (Centro) */}
         <Title level="h1" className={styles.title}>
           {title}
         </Title>

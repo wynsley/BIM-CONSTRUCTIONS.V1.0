@@ -4,6 +4,5 @@
   font-family: var(--font-montserrat-google), 'Montserrat', sans-serif;
   display: flex;
   flex-direction: column;
-  /* Override muted text color to be brighter on the dark footer background */
   --color-gray-500: rgba(255, 255, 255, 0.7);
 }

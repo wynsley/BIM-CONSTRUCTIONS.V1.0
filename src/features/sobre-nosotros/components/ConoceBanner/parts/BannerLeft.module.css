@@ -1,7 +1,7 @@
 .left {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centrado automático */
+  align-items: center; 
   text-align: center;
   gap: var(--space-md);
 }
@@ -13,7 +13,6 @@
   color: var(--color-white) !important;
   letter-spacing: 0.08em;
   line-height: 1.1;
-  /* margin-left eliminado, ahora se centra automáticamente */
 }
 
 .separator {
@@ -21,7 +20,6 @@
   height: 3px;
   background-color: var(--color-accent);
   border-radius: var(--radius-full);
-  /* margin-left eliminado */
 }
 
 @media (max-width: 768px) {
@@ -38,6 +36,5 @@
     width: 80px;
     height: 4px;
     margin-left: 0;
-    /* Un poco más gruesa en móvil para destacar */
   }
 }

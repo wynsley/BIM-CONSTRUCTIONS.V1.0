@@ -13,7 +13,6 @@ import { ContactCard } from "./ContactCard";
 export function ContactCards({ dict }) {
   if (!dict) return null;
 
-  /** Static card definitions — icon + dict key + highlight flag */
   const CARDS = [
     { id: "office",   icon: <MapPin  size={28} />, highlighted: false },
     { id: "email",    icon: <Mail    size={28} />, highlighted: true  },

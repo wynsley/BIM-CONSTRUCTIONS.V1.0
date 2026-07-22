@@ -38,7 +38,6 @@ export function NuestrosProyectos({ lang, dict }) {
           ))}
         </div>
         
-        {/* Placeholder if no projects match */}
         {filteredProjects.length === 0 && (
           <Text as="p" className={styles.emptyState}>{dict.emptyState}</Text>
         )}

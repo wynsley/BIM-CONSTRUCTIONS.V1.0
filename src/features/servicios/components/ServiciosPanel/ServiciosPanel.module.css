@@ -1,8 +1,3 @@
-/* ============================================================
-   ServiciosPanel — sección "NUESTROS SERVICIOS"
-   Fondo claro, texto centrado arriba, grid de 4 fotos abajo
-   ============================================================ */
-
 .section {
   position: relative;
   width: 100%;
@@ -11,7 +6,6 @@
   overflow: hidden;
 }
 
-/* Decoraciones de fondo (opcional, como en la imagen) */
 .section::before {
   content: "";
   position: absolute;

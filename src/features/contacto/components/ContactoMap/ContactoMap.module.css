@@ -1,6 +1,5 @@
 .section {
   width: 100%;
-  /* Height for the map, adjusting slightly for mobile */
   height: 500px;
   position: relative;
   background-color: var(--color-gray-100);

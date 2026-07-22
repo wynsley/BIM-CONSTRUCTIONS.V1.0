@@ -27,7 +27,6 @@ export default function GlobalError({ error, reset }) {
     if (process.env.NODE_ENV === 'development') {
       console.error("Error capturado por Error Boundary:", error);
     }
-    // In production, connect to Sentry or DataDog
   }, [error]);
 
   return (

@@ -15,7 +15,6 @@ export function ConoceHistoria({ dict }) {
   return (
     <section className={styles.section}>
       <div className={styles.container}>
-        {/* ---- Columna izquierda ---- */}
         <div className={styles.left}>
           <HistoriaText text={dict.text} />
 
@@ -31,7 +30,6 @@ export function ConoceHistoria({ dict }) {
           </div>
         </div>
 
-        {/* ---- Columna derecha: cards ---- */}
         <HistoriaCards dict={dict} />
       </div>
     </section>

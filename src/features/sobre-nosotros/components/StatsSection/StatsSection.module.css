@@ -6,7 +6,6 @@
   overflow: hidden;
 }
 
-/* ---- Contenedor ---- */
 .container {
   position: relative;
   z-index: 1;
@@ -16,7 +15,6 @@
 }
 
 
-/* ---- Flecha circular ---- */
 .arrowWrapper {
   display: flex;
   justify-content: center;
@@ -24,7 +22,6 @@
   background-color: var(--color-gray-50);
   position: relative;
   z-index: 2;
-  /* Espacio arriba y más espacio abajo para separarlo del cuadro negro */
   padding: var(--space-lg) 0 var(--space-2xl);
 }
 
@@ -45,14 +42,10 @@
   box-shadow: 0 10px 32px rgba(0, 0, 0, 0.55);
 }
 
-/* ---- Banner CTA negro ---- */
-/* padding-bottom extra reserva espacio visual antes del footer */
 .ctaBanner {
   width: 100%;
   background-color: var(--color-gray-50);
-  /* Continúa el fondo gris de la sección */
   padding: 0 var(--space-2xl) calc(var(--space-3xl) + 3rem);
-  /* Espacio lateral y padding inferior */
 }
 
 .ctaContent {
@@ -66,7 +59,6 @@
   gap: var(--space-2xl);
   border-top: 1px solid rgba(255, 255, 255, 0.05);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  /* Opcional: un borde sutil para que no sea tan cortante */
   border-radius: 4px;
 }
 
@@ -139,7 +131,6 @@
   box-shadow: 0 8px 24px rgba(var(--color-bim-orange-rgb), 0.5);
 }
 
-/* ---- Responsive ---- */
 @media (max-width: 768px) {
   .container {
     padding: 0 var(--space-lg);
@@ -153,7 +144,7 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: var(--space-2xl) var(--space-lg); /* Restaurado el padding vertical */
+    padding: var(--space-2xl) var(--space-lg);
     gap: var(--space-xl);
   }
   

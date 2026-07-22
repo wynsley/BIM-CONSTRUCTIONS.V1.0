@@ -1,7 +1,6 @@
 .section {
   padding: var(--space-2xl) 0;
   background-color: var(--color-white);
-  /* Fondo sutil tipo cuadrícula o gris muy claro para diferenciarlo del hero */
   background-image: radial-gradient(var(--color-gray-200) 1px, transparent 1px);
   background-size: 40px 40px;
 }

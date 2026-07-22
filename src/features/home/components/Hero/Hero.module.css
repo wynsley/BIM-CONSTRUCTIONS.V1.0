@@ -1,14 +1,13 @@
 .hero {
   position: relative;
   width: 100%;
-  min-height: 85vh; /* Altura para el video */
+  min-height: 85vh; 
   display: flex;
   align-items: center; 
   overflow: hidden; 
-  background-color: var(--color-gray-900); /* Color de respaldo si el video falla */
+  background-color: var(--color-gray-900); 
 }
 
-/* ---- Responsive ---- */
 @media (max-width: 768px) {
   .hero {
     min-height: 70vh;

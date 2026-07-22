@@ -1,6 +1,3 @@
-/* ─────────────────────────────
-   Columna izquierda: fotos
-   ───────────────────────────── */
 .photoGroup {
   position: relative;
   height: 450px;
@@ -23,7 +20,6 @@
   display: block;
 }
 
-/* Foto grande: arriba izquierda */
 .photo1 {
   width: 260px;
   height: 290px;
@@ -32,7 +28,6 @@
   z-index: 1;
 }
 
-/* Foto pequeña: abajo derecha */
 .photo2 {
   width: 230px;
   height: 250px;
@@ -41,7 +36,6 @@
   z-index: 2;
 }
 
-/* Caja +100 */
 .plusBox {
   position: absolute;
   top: 55%;

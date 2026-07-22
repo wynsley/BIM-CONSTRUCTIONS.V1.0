@@ -34,7 +34,6 @@
   padding-top: var(--space-sm);
 }
 
-/* ---- Responsive ---- */
 @media (max-width: 768px) {
   .container {
     padding: 0 var(--space-lg);

@@ -2,10 +2,6 @@ import { z } from "zod";
 
 import { isValidPhoneNumber } from "libphonenumber-js";
 
-/**
- * Zod schema for Contact Form validation.
- * Shared between client (if used with react-hook-form) and Server Actions.
- */
 export const contactFormSchema = z.object({
   name: z
     .string()

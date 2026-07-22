@@ -14,9 +14,9 @@
 
 .topGrid {
   display: grid;
-  grid-template-columns: 1fr 1.5fr; /* Right side form is wider */
+  grid-template-columns: 1fr 1.5fr; 
   gap: var(--space-4xl);
-  align-items: center; /* Center vertically relative to each other */
+  align-items: center; 
 }
 
 .leftCol {

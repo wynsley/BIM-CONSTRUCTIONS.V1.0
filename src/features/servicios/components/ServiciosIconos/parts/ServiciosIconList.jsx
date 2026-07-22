@@ -5,7 +5,6 @@ import { Briefcase, HardHat, Building2 } from "lucide-react";
 export function ServiciosIconList({ dict }) {
   return (
     <div className={styles.grid}>
-      {/* Icon 1: Gerencia de Proyectos (Briefcase) */}
       <div className={styles.iconCard}>
         <div className={styles.iconWrap}>
           <Briefcase className={styles.icon} strokeWidth={2.5} size={64} />
@@ -15,7 +14,6 @@ export function ServiciosIconList({ dict }) {
         </Text>
       </div>
 
-      {/* Icon 2: Supervisión de obras (Casco) */}
       <div className={styles.iconCard}>
         <div className={styles.iconWrap}>
           <HardHat className={styles.icon} strokeWidth={2.5} size={64} />
@@ -25,7 +23,6 @@ export function ServiciosIconList({ dict }) {
         </Text>
       </div>
 
-      {/* Icon 3: Construcción de Edificaciones (Edificio) */}
       <div className={styles.iconCard}>
         <div className={styles.iconWrap}>
           <Building2 className={styles.icon} strokeWidth={2.5} size={64} />

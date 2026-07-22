@@ -14,7 +14,6 @@ import { SocialIcon } from "@/shared/ui/SocialIcon/SocialIcon";
 export function ContactFooterInfo({ dict }) {
   if (!dict) return null;
 
-  /** Social links — name maps to SocialIcon's `name` prop */
   const SOCIALS = [
     { name: "facebook",  href: "#", label: "Facebook"  },
     { name: "whatsapp",  href: "#", label: "WhatsApp"  },
@@ -25,14 +24,12 @@ export function ContactFooterInfo({ dict }) {
   return (
     <div className={styles.footerContainer}>
 
-      {/* ── Schedule ── */}
       <div className={styles.hoursWrapper}>
         <Clock size={36} className={styles.clockIcon} aria-hidden="true" />
         <HourBlock title={dict.weekdaysTitle} hours={dict.weekdaysHours} />
         <HourBlock title={dict.weekendTitle}  hours={dict.weekendHours}  />
       </div>
 
-      {/* ── Social links ── */}
       <div className={styles.socialsWrapper}>
         <Title level="h4" className={styles.socialsTitle}>
           {dict.socialsTitle}

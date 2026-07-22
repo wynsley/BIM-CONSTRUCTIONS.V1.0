@@ -16,7 +16,6 @@ export function ProyectosGrid({ items, lang, ariaSuffix }) {
   return (
     <div className={styles.bentoGrid}>
       {gridItems.map((item, index) => {
-        // Assign a specific class to each index to handle the CSS Grid span
         const gridClass = styles[`item${index + 1}`];
 
         return (

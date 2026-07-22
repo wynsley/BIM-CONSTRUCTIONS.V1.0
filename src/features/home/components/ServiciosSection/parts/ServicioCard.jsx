@@ -19,7 +19,6 @@ import styles from "./ServicioCard.module.css";
 export function ServicioCard({ title, imageSrc, imageAlt, href, ctaText = "Ver servicio →", ariaSuffix = "— Ver servicio" }) {
   return (
     <a href={href} className={styles.card} aria-label={`${title} ${ariaSuffix}`}>
-      {/* Imagen de fondo */}
       <Image
         src={imageSrc}
         alt={imageAlt}
@@ -28,10 +27,8 @@ export function ServicioCard({ title, imageSrc, imageAlt, href, ctaText = "Ver s
         className={styles.cardImage}
       />
 
-      {/* Capa glassmorphism con gradiente azul corporativo */}
       <div className={styles.cardGlass} aria-hidden="true" />
 
-      {/* Contenido visible */}
       <div className={styles.cardContent}>
         <Title level="h3" className={styles.cardTitle}>{title}</Title>
         <Text as="span" className={styles.cardCta} aria-hidden="true">

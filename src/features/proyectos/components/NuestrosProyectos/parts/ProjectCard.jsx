@@ -22,12 +22,10 @@ export function ProjectCard({ project, lang }) {
           className={styles.image}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        {/* Capa de oscurecimiento */}
         <div className={styles.overlay} aria-hidden="true" />
       </div>
 
       <div className={styles.content}>
-        {/* Líneas decorativas que se alargan en el hover */}
         <div className={styles.lineTopLeft} aria-hidden="true">
           <div className={styles.lineHorizontal} />
           <div className={styles.lineVertical} />

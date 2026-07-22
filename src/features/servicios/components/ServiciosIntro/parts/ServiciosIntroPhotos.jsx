@@ -4,7 +4,6 @@ import Image from "next/image";
 export function ServiciosIntroPhotos() {
   return (
     <div className={styles.photoGroup} aria-hidden="true">
-      {/* Foto grande: ingenieros revisando planos */}
       <div className={styles.photo1}>
         <Image
           src="/images/construction-plans.png"
@@ -14,7 +13,6 @@ export function ServiciosIntroPhotos() {
           className={styles.img}
         />
       </div>
-      {/* Foto pequeña: reunión modelo BIM */}
       <div className={styles.photo2}>
         <Image
           src="/images/bim-model.png"

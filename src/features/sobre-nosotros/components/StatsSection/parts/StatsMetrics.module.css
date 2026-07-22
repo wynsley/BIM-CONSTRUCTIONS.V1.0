@@ -17,7 +17,6 @@
   position: relative;
 }
 
-/* Divisor vertical entre métricas */
 .metric:not(:last-child)::after {
   content: "";
   position: absolute;
@@ -58,7 +57,6 @@
     width: 100%;
   }
 
-  /* Cambiar el divisor vertical por uno horizontal en móvil */
   .metric:not(:last-child)::after {
     content: "";
     position: absolute;

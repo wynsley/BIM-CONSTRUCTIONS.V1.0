@@ -8,7 +8,6 @@
   justify-content: center;
 }
 
-/* Fondo con overlay */
 .bg {
   position: absolute;
   inset: 0;
@@ -47,7 +46,6 @@
   text-shadow: 0 2px 4px rgba(var(--color-black-rgb), 0.5);
 }
 
-/* Grid layout con efecto escalonado (stagger) */
 .grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -55,18 +53,15 @@
   align-items: flex-start;
 }
 
-/* Los elementos pares bajan para crear el efecto de zig-zag / staggered */
 .gridItem:nth-child(even) {
   margin-top: 80px;
 }
 
-/* Responsive */
 @media (max-width: 1024px) {
   .grid {
     grid-template-columns: repeat(2, 1fr);
   }
   
-  /* Reset and apply to right column in 2-col layout */
   .gridItem:nth-child(even) {
     margin-top: 60px;
   }
@@ -78,7 +73,6 @@
     gap: var(--space-lg);
   }
   
-  /* Disable stagger on mobile */
   .gridItem:nth-child(even) {
     margin-top: 0;
   }

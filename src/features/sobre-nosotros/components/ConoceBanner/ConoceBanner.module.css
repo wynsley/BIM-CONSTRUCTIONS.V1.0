@@ -21,7 +21,6 @@
   gap: var(--space-xl);
 }
 
-/* ---- Divider vertical ---- */
 .divider {
   width: 2px;
   height: 80px;
@@ -30,7 +29,6 @@
   flex-shrink: 0;
 }
 
-/* ---- Tablet (900px) ---- */
 @media (max-width: 900px) {
   .banner {
     width: 100%;
@@ -43,7 +41,6 @@
   }
 }
 
-/* ---- Móvil (640px): apila verticalmente ---- */
 @media (max-width: 640px) {
   .banner {
     width: 100%;

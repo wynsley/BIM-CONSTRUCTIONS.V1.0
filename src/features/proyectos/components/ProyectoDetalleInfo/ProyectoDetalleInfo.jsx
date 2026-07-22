@@ -23,23 +23,19 @@ export function ProyectoDetalleInfo({ proyecto, dict, statusText }) {
   return (
     <section className={styles.infoSection} aria-label="Información del proyecto">
       
-      {/* Tarjetas Superiores (Metadatos) */}
       <ProyectoInfoMetaCards 
         proyecto={proyecto} 
         t={t} 
         statusText={statusText} 
       />
 
-      {/* Contenido Principal (Dos Columnas) */}
       <div className={styles.mainContent}>
         
-        {/* Columna Izquierda: Descripción */}
         <ProyectoInfoDescription 
           description={description} 
           t={t} 
         />
 
-        {/* Columna Derecha: Galería interactiva */}
         <ProyectoInfoGallery 
           gallery={proyecto.gallery} 
           t={t} 

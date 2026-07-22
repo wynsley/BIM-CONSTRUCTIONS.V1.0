@@ -22,15 +22,12 @@ export function ContactoDetails({ dict }) {
     >
       <div className={styles.container}>
 
-        {/* ── Two-column top grid ── */}
         <div className={styles.topGrid}>
 
-          {/* Left — stacked contact cards */}
           <div className={styles.leftCol}>
             <ContactCards dict={dict.cards} />
           </div>
 
-          {/* Right — form inside slanted panel */}
           <div className={styles.rightCol}>
             <FormPanel>
               <ContactForm dict={dict.form} />
@@ -39,7 +36,6 @@ export function ContactoDetails({ dict }) {
 
         </div>
 
-        {/* ── Bottom strip ── */}
         <ContactFooterInfo dict={dict.footer} />
 
       </div>

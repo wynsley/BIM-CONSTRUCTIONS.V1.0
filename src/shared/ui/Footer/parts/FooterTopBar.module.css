@@ -35,13 +35,6 @@
   align-items: center;
 }
 
-.logoWhite {
-  /* color handled by variant */
-}
-
-.logoOrange {
-  /* color handled by variant */
-}
 
 @media (min-width: 768px) {
   .logo {

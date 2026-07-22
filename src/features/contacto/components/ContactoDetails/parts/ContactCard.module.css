@@ -2,12 +2,10 @@
   position: relative;
   background-color: var(--color-white);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
-  /* Extra padding-left and padding-top so the absolutely-positioned icon box
-     (which bleeds 20px outside top-left) is never clipped */
   padding: var(--space-xl) var(--space-xl) var(--space-xl) 4rem;
-  margin-top: 20px;  /* Makes room for the overflowing icon box */
+  margin-top: 20px;  
   border-radius: 2px;
-  overflow: visible; /* Ensure the absolute icon box is not clipped */
+  overflow: visible; 
   transition: transform var(--transition-normal), box-shadow var(--transition-normal);
 }
 
@@ -16,7 +14,6 @@
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
 }
 
-/* ── Highlighted (orange) variant ── */
 .highlighted {
   background-color: var(--color-primary);
   box-shadow: 0 10px 30px rgba(var(--color-primary-rgb), 0.25);
@@ -26,7 +23,6 @@
   box-shadow: 0 16px 40px rgba(var(--color-primary-rgb), 0.35);
 }
 
-/* ── Icon box — overlaps top-left corner ── */
 .iconBox {
   position: absolute;
   top: 50%;
@@ -44,15 +40,13 @@
   z-index: 1;
 }
 
-/* ── Content ── */
 .content {
   display: flex;
   flex-direction: column;
   gap: var(--space-xs);
-  padding-left: var(--space-md); /* Slight offset from icon edge */
+  padding-left: var(--space-md); 
 }
 
-/* Title colour overrides */
 .title {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
@@ -63,7 +57,6 @@
   color: var(--color-white);
 }
 
-/* Text colour override for highlighted card */
 .textHighlighted {
   font-style: normal !important;
 }

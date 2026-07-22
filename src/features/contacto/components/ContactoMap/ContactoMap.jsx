@@ -7,7 +7,6 @@ import styles from "./ContactoMap.module.css";
  * @returns {JSX.Element}
  */
 export function ContactoMap() {
-  // Free Google Maps embed URL (no API key required)
   const mapQuery = encodeURIComponent("Cieneguilla, la Cruz, Lima, Peru");
   const embedUrl = `https://maps.google.com/maps?q=${mapQuery}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
 

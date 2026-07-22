@@ -4,7 +4,6 @@ import { contactFormSchema } from "@/shared/lib/validators";
 import { sendContactNotificationEmail } from "@/shared/lib/emailService";
 import { headers } from "next/headers";
 
-// In-memory cache for simple rate limiting
 /**
  * In-memory rate limiting cache.
  * ⚠️ LIMITATION: This Map does not persist across serverless function invocations
@@ -23,8 +22,6 @@ const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minuto
  * @returns {Promise<{errors?: Object, message?: string, success?: boolean}>}
  */
 export async function submitContactForm(prevState, formData) {
-  // 1. Honeypot check for bots
-  // If the honeypot field is filled, silently reject it to fool the bot
   const honeypot = formData.get("bot_field");
   if (honeypot) {
     console.warn("[Security] Bot detected via honeypot.");
@@ -40,7 +37,6 @@ export async function submitContactForm(prevState, formData) {
     message: formData.get("message"),
   };
 
-  // 2.5 Rate Limiting (Capa 8) - Evita recargas y spam
   const headersList = await headers();
   const ip = headersList.get("x-forwarded-for") || "unknown";
   const rateLimitKey = `${ip}-${rawData.email}`;
@@ -60,7 +56,6 @@ export async function submitContactForm(prevState, formData) {
 
   const parsed = contactFormSchema.safeParse(rawData);
 
-  // 3. Validation failure handling
   if (!parsed.success) {
     return {
       success: false,
@@ -70,9 +65,7 @@ export async function submitContactForm(prevState, formData) {
     };
   }
 
-  // 4. Execute business logic (Backend only)
   try {
-    // Record the attempt for rate limiting
     rateLimitCache.set(rateLimitKey, now);
 
     const emailResult = await sendContactNotificationEmail(parsed.data);
@@ -85,7 +78,6 @@ export async function submitContactForm(prevState, formData) {
       };
     }
 
-    // 5. Return success
     return {
       success: true,
       message: "¡Gracias por contactarnos! Hemos recibido tu mensaje. / Thank you for contacting us! We have received your message.",

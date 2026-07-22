@@ -1,8 +1,3 @@
-/* ============================================================
-   ServiciosIntro — replica exacta del Figma
-   ============================================================ */
-
-/* ── Sección ── */
 .section {
   position: relative;
   width: 100%;
@@ -11,7 +6,6 @@
   overflow: hidden;
 }
 
-/* ── Formas diagonales decorativas (Beige) ── */
 .section::before {
   content: "";
   position: absolute;
@@ -38,7 +32,6 @@
   z-index: 0;
 }
 
-/* ── Contenedor interior ── */
 .inner {
   position: relative;
   z-index: 1;
@@ -48,10 +41,9 @@
 }
 
 .sectionLabel {
-  display: none; /* No está en el diseño */
+  display: none; 
 }
 
-/* ── Grid 2 columnas ── */
 .grid {
   display: grid;
   grid-template-columns: 1fr 1.2fr;
