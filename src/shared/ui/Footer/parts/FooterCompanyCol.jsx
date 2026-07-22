@@ -6,11 +6,11 @@ import styles from './FooterCompanyCol.module.css';
 export function FooterCompanyCol({ dict, lang }) {
   return (
     <div className={styles.col}>
-      <Title level="h3" className={styles.title}>{dict.company.title}</Title>
-      <Text className={styles.text}>{dict.company.desc}</Text>
+      <Title level="h3" variant="white" className={styles.title}>{dict.company.title}</Title>
+      <Text variant="muted" className={styles.text}>{dict.company.desc}</Text>
       
       <div className={styles.menuGroup}>
-        <Text className={styles.menuTitle}>{dict.company.menuTitle}</Text>
+        <Text variant="white" className={styles.menuTitle}>{dict.company.menuTitle}</Text>
         <ul className={styles.links}>
           <li className={styles.listItem}><Link href={`/${lang}`} className={styles.linkItem}>{dict.company.links.about}</Link></li>
           <li className={styles.listItem}><Link href={`/${lang}/servicios`} className={styles.linkItem}>{dict.company.links.services}</Link></li>

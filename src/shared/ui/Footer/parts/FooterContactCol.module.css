@@ -64,7 +64,6 @@
 
 .menuTitle {
   font-family: var(--font-bebas-google), 'Bebas Neue', cursive;
-  color: var(--color-white, #ffffff);
   letter-spacing: 0.05em;
   font-size: 1.1rem;
   text-transform: uppercase;
@@ -120,12 +119,10 @@
 }
 
 .hourDay {
-  color: var(--color-white, #ffffff);
   font-weight: 600;
   font-size: 0.9rem;
 }
 
 .hourTime {
-  color: var(--color-gray-500, #9ca3af);
   font-size: 0.85rem;
 }

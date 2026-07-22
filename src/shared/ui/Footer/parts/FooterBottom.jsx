@@ -6,11 +6,11 @@ export function FooterBottom({ dict }) {
   return (
     <div className={styles.bottomArea}>
       <div className={styles.bottomContainer}>
-        <Text className={styles.copyright}>
+        <Text variant="muted" className={styles.copyright}>
           {dict.bottom.copyright.replace('{year}', new Date().getFullYear().toString())}
         </Text>
         <div className={styles.socialBox}>
-          <Text className={styles.socialTitle}>{dict.bottom.socialTitle}</Text>
+          <Text variant="muted" className={styles.socialTitle}>{dict.bottom.socialTitle}</Text>
           <div className={styles.socialLinks}>
             <a href="https://facebook.com" className={styles.socialLink} target="_blank" rel="noopener noreferrer" aria-label="Facebook">
               <SocialIcon name="facebook" size={20} />

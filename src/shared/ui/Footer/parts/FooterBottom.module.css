@@ -26,7 +26,6 @@
 }
 
 .copyright {
-  color: var(--color-gray-500, #6b7280);
   font-size: 0.85rem;
   margin: 0;
 }
@@ -47,7 +46,7 @@
 }
 
 .socialTitle {
-  color: var(--color-gray-500, #9ca3af);
+  /* color removed, handled by JSX variant */
 }
 
 .socialLinks {

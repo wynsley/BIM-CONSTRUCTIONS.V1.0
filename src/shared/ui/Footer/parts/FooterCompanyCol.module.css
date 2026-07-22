@@ -12,14 +12,12 @@
 }
 
 .title {
-  color: var(--color-white, #ffffff);
   margin: 0;
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
 }
 
 .text {
-  color: var(--color-gray-500, #9ca3af);
   line-height: 1.6;
   font-size: 0.95rem;
 }
@@ -40,7 +38,6 @@
 
 .menuTitle {
   font-family: var(--font-bebas-google), 'Bebas Neue', cursive;
-  color: var(--color-white, #ffffff);
   letter-spacing: 0.05em;
   font-size: 1.1rem;
   text-transform: uppercase;
