@@ -18,28 +18,77 @@ const bebasNeue = Bebas_Neue({
 export async function generateMetadata({ params }) {
   const { lang } = await params;
   const dict = await getDictionary(lang);
+
+  const title = dict.home?.metadata?.title || 'BIM Constructions — Ingeniería y Construcción Profesional';
+  const description = dict.home?.metadata?.description || 'BIM Constructions ofrece servicios de ingeniería, construcción y gestión de proyectos con tecnología BIM de vanguardia.';
+  const baseUrl = 'https://bim-constructions.com';
+  
+  // Mapeo correcto del locale para OpenGraph (ej. 'es_PE', 'es_ES', 'en_US')
+  const ogLocale = lang === 'es' ? 'es_PE' : 'en_US'; 
+
   return {
-    metadataBase: new URL('https://bim-constructions.com'),
+    metadataBase: new URL(baseUrl),
     title: {
       template: '%s | BIM Constructions',
-      default: dict.home?.metadata?.title || 'BIM Constructions — Ingeniería y Construcción Profesional',
+      default: title,
     },
-    description: dict.home?.metadata?.description || 'BIM Constructions ofrece servicios de ingeniería, construcción y gestión de proyectos con tecnología BIM de vanguardia.',
+    description: description,
+    
+    // SEO HREFLANG (Crucial para sitios multi-idioma)
+    alternates: {
+      canonical: `/${lang}`,
+      languages: {
+        'es': '/es',
+        'en': '/en',
+        'x-default': '/es', // Idioma por defecto para otros países
+      },
+    },
+
+    //Control de Robots e Indexación
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+
+    //Open Graph Completo
     openGraph: {
-      title: dict.home?.metadata?.title,
-      description: dict.home?.metadata?.description,
-      url: 'https://bim-constructions.com',
+      title: title,
+      description: description,
+      url: `${baseUrl}/${lang}`,
       siteName: 'BIM Constructions',
-      images: [{ url: '/images/proyectos/corporate_building_1784149314956.png', width: 1200, height: 630 }],
-      locale: lang,
+      images: [
+        {
+          url: '/images/proyectos/corporate_building_1784149314956.png',
+          width: 1200,
+          height: 630,
+          alt: 'BIM Constructions - Edificio Corporativo',
+        },
+      ],
+      locale: ogLocale,
       type: 'website',
     },
+
+    //Twitter Card
     twitter: {
       card: 'summary_large_image',
-      title: dict.home?.metadata?.title,
-      description: dict.home?.metadata?.description,
+      title: title,
+      description: description,
       images: ['/images/proyectos/corporate_building_1784149314956.png'],
-    }
+    },
+
+    //Favicons / PWA Icons
+    icons: {
+      icon: '/favicon.ico',
+      shortcut: '/favicon-16x16.png',
+      apple: '/apple-touch-icon.png',
+    },
   };
 }
 
