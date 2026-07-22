@@ -1,5 +1,4 @@
 import styles from "./LocationMap.module.css";
-import PropTypes from "prop-types";
 
 /**
  * Map subcomponent for the location section.
@@ -26,8 +25,3 @@ export function LocationMap({ src, title }) {
     </div>
   );
 }
-
-LocationMap.propTypes = {
-  src: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-};
