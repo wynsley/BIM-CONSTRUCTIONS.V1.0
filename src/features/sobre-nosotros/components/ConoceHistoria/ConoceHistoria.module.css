@@ -60,6 +60,6 @@
     padding: 0 var(--space-lg);
   }
   .houseWrapper {
-    height: 180px; /* Aún más pequeña en móviles pequeños */
+    height: 180px;
   }
 }
