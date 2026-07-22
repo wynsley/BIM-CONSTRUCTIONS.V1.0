@@ -28,21 +28,16 @@
 .inner {
   position: relative;
   z-index: 1;
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--space-2xl);
 }
 
 /* ── Label "Introducción" ── */
-.sectionLabel {
-  font-family: var(--font-sans);
-  font-size: 1.15rem;
-  font-weight: var(--font-weight-bold);
-  color: var(--color-primary); /* Hecho azul como en la imagen */
-  margin: 0 0 var(--space-2xl) 0;
-  text-transform: uppercase;
+.sectionLabel{
+  font-size: 2em;
+  margin-bottom: 1em;
 }
-
 /* ── Grid 2 columnas ── */
 .grid {
   display: grid;
