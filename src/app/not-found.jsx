@@ -32,7 +32,7 @@ export default function GlobalNotFound() {
   };
 
   return (
-    <html lang="es" className={`${montserrat.variable} ${bebasNeue.variable}`} data-scroll-behavior="smooth" suppressHydrationWarning={true}>
+    <html lang="es" className={`${montserrat.variable} ${bebasNeue.variable}`} suppressHydrationWarning={true}>
       <body suppressHydrationWarning={true}>
         <main>
           <NotFoundState dict={bilingualDict} lang="es" />

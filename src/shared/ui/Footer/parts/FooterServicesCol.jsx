@@ -9,11 +9,11 @@ export function FooterServicesCol({ dict, lang }) {
       <Title level="h3" className={styles.title}>{dict.services.title}</Title>
       <ul className={styles.links}>
         {dict.services.items.map((item, i) => (
-          <li key={i}><Text className={styles.bullet}>•</Text> <Text>{item}</Text></li>
+          <li key={i}><Text variant="inherit">{item}</Text></li>
         ))}
       </ul>
       <Link href={`/${lang}/servicios`} className={styles.viewAll}>
-        <Text className={styles.bullet}>•</Text> {dict.services.viewAll}
+        {dict.services.viewAll}
       </Link>
     </div>
   );
