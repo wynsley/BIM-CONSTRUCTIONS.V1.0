@@ -8,10 +8,10 @@ export function FooterTopBar({ dict }) {
     <div className={styles.topBar}>
       <div className={styles.topContainer}>
         <div className={styles.logo}>
-          <Text className={styles.logoWhite}>BIM</Text>
-          <Text className={styles.logoOrange}>CONSTRUCTIONS</Text>
+          <Text variant="white" className={styles.logoWhite}>BIM</Text>
+          <Text variant="secondary" className={styles.logoOrange}>CONSTRUCTIONS</Text>
         </div>
-        <Text className={styles.slogan}>
+        <Text variant="muted" className={styles.slogan}>
           {dict.tagline}
         </Text>
         <div className={styles.ctaBox}>
@@ -19,8 +19,8 @@ export function FooterTopBar({ dict }) {
             <Icon name="phoneCTA" size={24} />
           </div>
           <div className={styles.ctaTextContainer}>
-            <Title level="h4" className={styles.ctaTitle}>{dict.ctaText}</Title>
-            <Text className={styles.ctaPhone}>{dict.contact.phone}</Text>
+            <Title level="h4" variant="white" className={styles.ctaTitle}>{dict.ctaText}</Title>
+            <Text variant="white" className={styles.ctaPhone}>{dict.contact.phone}</Text>
           </div>
         </div>
       </div>

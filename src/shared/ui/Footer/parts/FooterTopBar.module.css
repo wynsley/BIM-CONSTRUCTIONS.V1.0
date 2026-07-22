@@ -36,11 +36,11 @@
 }
 
 .logoWhite {
-  color: var(--color-white, #ffffff);
+  /* color handled by variant */
 }
 
 .logoOrange {
-  color: var(--color-accent, #ea580c);
+  /* color handled by variant */
 }
 
 @media (min-width: 768px) {
@@ -52,7 +52,6 @@
 }
 
 .slogan {
-  color: var(--color-gray-500, #9ca3af);
   font-size: 0.95rem;
   max-width: 300px;
   text-align: center;
@@ -96,11 +95,9 @@
 .ctaTitle {
   font-weight: 600;
   font-size: 0.9rem;
-  color: var(--color-white, #ffffff);
 }
 
 .ctaPhone {
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.9);
   white-space: pre-line;
 }
